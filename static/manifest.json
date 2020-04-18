@@ -1,0 +1,22 @@
+{
+	"background_color": "#ffffff",
+	"theme_color": "#333333",
+  "name": "Covid 19 PT Information Map",
+  "short_name": "Covid 19 PT Info",
+  "description": "A deep analysis to all available data from Portugal.",
+  "display": "fullscreen",
+  "start_url": "/covid19pt/",
+  "orientation": "portrait",
+	"icons": [
+		{
+      "src": "favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+		}
+	]
+}
