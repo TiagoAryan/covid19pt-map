@@ -1,7 +1,11 @@
 <script>
   import { onMount } from "svelte";
 
-  export let data;
+  export let concelhoData;
+  export let distritosData;
+  export let type = true;
+
+  $: distritosData, placeAllCircles();
 
   onMount(() => {
     var bounds = [[36, -6], [42, -9]];
@@ -29,6 +33,20 @@
       console.info("onMapClick");
     }
   });
+
+  function placeAllCircles() {
+    if (!concelhoData && !distritosData) return;
+    if (type) {
+      let data = concelhoData.filter(e => "COIMBRA" == e.attributes.Concelho);
+      console.info(data);
+    } else {
+      console.info(distritosData[0]);
+    }
+  }
+
+  function changeType() {
+    type = !type;
+  }
 </script>
 
 <style>

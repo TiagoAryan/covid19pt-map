@@ -1,6 +1,6 @@
 {
-  "name": "covid19-map-pt",
-  "description": "covid19-map-pt",
+  "name": "covid19pt-map",
+  "description": "covid19pt-map",
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
@@ -16,6 +16,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
     "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
     "polka": "^0.5.2",
     "sirv": "^0.4.0"
   },
