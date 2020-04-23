@@ -14,6 +14,7 @@
   onMount(() => {
     let bounds = [[30, -6], [43, -31]];
     let selectedConselho;
+    let hoveresConselho;
 
     mapboxgl.setRTLTextPlugin(
       "https://cdn.maptiler.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.2/mapbox-gl-rtl-text.js"
@@ -23,15 +24,40 @@
     map = new mapboxgl.Map({
       container: "map",
       style:
-        "https://api.maptiler.com/maps/5ce0b2a2-d5dc-44ae-84f3-7211439b9474/style.json?key=TLbKST4hnYUY3nc3yvDh",
-      center: [-18.732, 38.342],
+        "https://api.maptiler.com/maps/0732d48d-d1a9-444a-a472-c0a0ff8bf150/style.json?key=TLbKST4hnYUY3nc3yvDh",
+      center: [-9, 38.342],
       zoom: 5,
       minZoom: 5,
       maxZoom: 8
     });
 
     map.on("load", function() {
-      // Add source for admin-1 Boundaries
+      var layers = map.getStyle().layers;
+      // Find the index of the first symbol layer in the map style
+      var firstSymbolId;
+      for (var i = 0; i < layers.length; i++) {
+        if (layers[i].type === "symbol") {
+          firstSymbolId = layers[i].id;
+          break;
+        }
+      }
+      // Add source for PORTUGAL
+      map.addSource("country", {
+        type: "geojson",
+        data: "./portugal.geo.json",
+        generateId: true
+      });
+      map.addLayer({
+        id: "country-fills",
+        type: "fill",
+        source: "country",
+        layout: {},
+        paint: {
+          "fill-color": "#38393F"
+        }
+      });
+
+      // Add source for CONSELHOS
       map.addSource("conselhos", {
         type: "geojson",
         data: "./municip.geojson",
@@ -44,42 +70,71 @@
         source: "conselhos",
         layout: {},
         paint: {
-          "fill-color": "#627BC1",
+          "fill-color": [
+            "match",
+            ["feature-state", "severity"],
+            "Bad",
+            "#FF4E34",
+            "Medium",
+            "#FFC831",
+            "#40C0A5"
+          ],
           "fill-opacity": [
             "case",
-            ["boolean", ["feature-state", "hover"], false],
-            1,
-            0.5
+            ["boolean", ["feature-state", "select"], false],
+            0.4,
+            0.1
           ]
-        }
+        },
+        firstSymbolId
+      });
+
+      map.addLayer({
+        id: "conselhos-borders",
+        type: "line",
+        source: "conselhos",
+        layout: {},
+        paint: {
+          "line-width": [
+            "case",
+            ["boolean", ["feature-state", "select"], false],
+            3,
+            1
+          ],
+          "line-color": [
+            "case",
+            ["boolean", ["feature-state", "select"], false],
+            "#E1E1EE",
+            "#18181A"
+          ]
+        },
+        firstSymbolId
       });
       map.on("mousemove", "conselhos-fills", function(e) {
         map.getCanvas().style.cursor = "pointer";
         if (e.features.length > 0) {
-          if (selectedConselho) {
+          if (hoveresConselho) {
             map.setFeatureState(
-              { source: "conselhos", id: selectedConselho },
+              { source: "conselhos", id: hoveresConselho },
               { hover: false }
             );
           }
-          selectedConselho = e.features[0].id;
+          hoveresConselho = e.features[0].id;
           map.setFeatureState(
-            { source: "conselhos", id: selectedConselho },
+            { source: "conselhos", id: hoveresConselho },
             { hover: true }
           );
         }
       });
 
       map.on("mouseleave", "conselhos-fills", function() {
-        if (selectedConselho) {
+        if (hoveresConselho) {
           map.setFeatureState(
-            { source: "conselhos", id: selectedConselho },
+            { source: "conselhos", id: hoveresConselho },
             { hover: false }
           );
         }
-        selectedConselho = null;
-
-        popup.remove();
+        hoveresConselho = null;
       });
 
       var popup = new mapboxgl.Popup({
@@ -87,6 +142,19 @@
         closeOnClick: false
       });
       map.on("click", "conselhos-fills", e => {
+        if (e.features.length > 0) {
+          if (selectedConselho) {
+            map.setFeatureState(
+              { source: "conselhos", id: selectedConselho },
+              { select: false }
+            );
+          }
+          selectedConselho = e.features[0].id;
+          map.setFeatureState(
+            { source: "conselhos", id: selectedConselho },
+            { select: true }
+          );
+        }
         Municip = e.features[0].properties.Municipality;
 
         var bound = L.latLngBounds(L.geoJson(e.features[0]).getBounds());
@@ -203,6 +271,15 @@
                   e.attributes.Concelho
               )[0].attributes.ConfirmadosAcumulado_Conc / 10;
 
+            if (num_circles > 10) {
+              var r_severity = "Bad";
+            } else {
+              var r_severity = "Medium";
+            }
+            map.setFeatureState(
+              { source: "conselhos", id: features[r].id },
+              { severity: r_severity }
+            );
             while (j < num_circles) {
               //random positions
               var lat = y_min + Math.random() * (y_max - y_min);
