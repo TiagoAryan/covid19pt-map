@@ -1,9 +1,8 @@
 <script>
   import { s } from "misc";
   import moment from "moment";
-  import "moment/locale/pt";
 
-  export let lastDdata;
+  export let lastData;
 
   var dt = 0,
     active = 0,
@@ -11,20 +10,15 @@
     recovered = 0,
     deaths = 0;
 
-  moment.locale("pt");
-
-  $: lastDdata, setContent();
+  $: lastData, setContent();
 
   function setContent() {
-    if (lastDdata) {
-      let data = lastDdata[0].attributes;
-      console.log(data);
-
-      dt = data.CreationDate;
-      active = data.CasosActivos;
-      confirmed = data.casosconfirmados;
-      recovered = data.recuperados;
-      deaths = data.nrobitos;
+    if (lastData) {
+      dt = lastData.data.split("-");
+      confirmed = lastData.confirmados;
+      recovered = lastData.recuperados;
+      deaths = lastData.obitos;
+      active = confirmed - recovered - deaths;
     }
   }
 </script>
@@ -62,12 +56,14 @@
 
   <div class="container-header">
     <div class="container-header-contents">
-      Dados de {moment(dt).format('LLL')}
+      Portugal (
+      <time>{moment(dt[2] + dt[1] + dt[0]).format('D MMMM YYYY')}</time>
+      )
     </div>
 
   </div>
 
-  {#if lastDdata}
+  {#if lastData}
     <div
       class="container-body"
       style=" width: 100%; padding-bottom: 28px; margin-bottom: 16px;">
