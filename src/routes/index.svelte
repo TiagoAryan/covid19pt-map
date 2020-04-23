@@ -1,9 +1,11 @@
 <script>
   import Map from "../components/map.svelte";
   import Preview from "../components/preview.svelte";
+  import Details from "../components/details.svelte";
+  import Chart from "../components/chart.svelte";
   import { CovidPT } from "covid19-api-pt";
 
-  var lastData, timelineData, concelhoData, distritosData;
+  var lastData, timelineData, concelhoData;
 
   getData();
 
@@ -42,4 +44,6 @@
 
 <Map {timelineData} {concelhoData} />
 <Preview {lastData} />
+<Details {timelineData} />
+<Chart {timelineData} />
 <h1>Great success!</h1>

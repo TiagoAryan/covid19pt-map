@@ -1,7 +1,9 @@
 <script>
   import { onMount } from "svelte";
 
+  export let timelineData;
   export let concelhoData;
+  var type = false;
   var map;
 
   let Municip;
@@ -32,7 +34,7 @@
       // Add source for admin-1 Boundaries
       map.addSource("conselhos", {
         type: "geojson",
-        data: "./map.geojson",
+        data: "./municip.geojson",
         generateId: true
       });
 
@@ -79,6 +81,7 @@
 
         popup.remove();
       });
+
       var popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false
@@ -162,6 +165,7 @@
     }
     return inside;
   }
+
   function placeAllCircles() {
     if (!concelhoData) return;
     let first_run = false;
