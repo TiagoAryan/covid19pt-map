@@ -24,7 +24,7 @@
         "https://api.maptiler.com/maps/5ce0b2a2-d5dc-44ae-84f3-7211439b9474/style.json?key=TLbKST4hnYUY3nc3yvDh",
       center: [-18.732, 38.342],
       zoom: 5,
-      minZoom: 1,
+      minZoom: 5,
       maxZoom: 8
     });
 
