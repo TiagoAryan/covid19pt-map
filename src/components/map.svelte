@@ -1,11 +1,11 @@
 <script>
   import { onMount } from "svelte";
 
+  export let timelineData;
   export let concelhoData;
-  export let distritosData;
   export let type = true;
 
-  $: distritosData, placeAllCircles();
+  $: concelhoData, placeAllCircles();
 
   onMount(() => {
     var bounds = [[36, -6], [42, -9]];
@@ -35,12 +35,12 @@
   });
 
   function placeAllCircles() {
-    if (!concelhoData && !distritosData) return;
+    if (!timelineData && !concelhoData) return;
     if (type) {
       let data = concelhoData.filter(e => "COIMBRA" == e.attributes.Concelho);
       console.info(data);
     } else {
-      console.info(distritosData[0]);
+      console.info(timelineData);
     }
   }
 
