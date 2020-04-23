@@ -24,28 +24,54 @@
     });
     
   map.on('load', function() {
+    var layers = map.getStyle().layers;
+    // Find the index of the first symbol layer in the map style
+    var firstSymbolId;
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].type === 'symbol') {
+        firstSymbolId = layers[i].id;
+      break;
+      }
+    }
       // Add source for admin-1 Boundaries
       map.addSource('conselhos', {
               'type': 'geojson',
               'data':  './mapp.geojson',
               'generateId': true 
           });
-      
-
-
- 
         map.addLayer({
             'id': 'conselhos-fills',
             'type': 'fill',
             'source': 'conselhos',
             'layout': {},
             'paint': {
-                'fill-color': '#627BC1',
+                'fill-color': '#EFEFF6',
                 'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
-                    1,
-                    0.5
+                    0.2,
+                    0
+                ]
+            }
+        });
+
+          map.addLayer({
+            'id': 'conselhos-lines',
+            'type': 'line',
+            'source': 'conselhos',
+            'layout': {},
+            'paint': {
+                'line-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    3,
+                    1
+                ],
+                'line-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    '#EFEFF6',
+                    '#18181A'
                 ]
             }
         });
@@ -90,7 +116,6 @@
     console.log("idle");
     //your code here 
     if(!first_run){
-    console.log("ONE TIME");
 
       var features = map.queryRenderedFeatures({ layers: ['conselhos-fills'] });
       var num_circles = 10;
@@ -121,7 +146,6 @@
             weight: 1,
             interactive: false
           };
-          console.log(features[r].geometry);
           
           if ( features[r].geometry.type == "MultiPolygon") {
             for ( var m = 0;  m <  features[r].geometry.coordinates.length;m++ ) {
@@ -183,6 +207,8 @@
               'circle-color': '#fbb03b'
               }
         });
+
+      
       first_run=true;
     }
     })
