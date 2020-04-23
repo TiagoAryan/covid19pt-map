@@ -517,6 +517,30 @@ button:hover,
   display: inline-block;
   margin: 0;
 }
+
+.mapboxgl-popup-content{
+  background-color: #121212;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  font-family: "Open Sans", sans-serif;
+  color: #d6d6d7;
+  font-weight: 300;
+  padding: 10px 16px 16px 16px;
+
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{
+  border-top-color:#121212 ;
+}
+.mapboxgl-popup-content p{
+  margin:0;
+  font-weight: 300;
+  font-family: "Open Sans", sans-serif;
+
+}
+.mapboxgl-popup-content strong{
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+
+}
 @keyframes lds-roller {
   0% {
     transform: rotate(0deg);
