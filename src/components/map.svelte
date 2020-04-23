@@ -149,70 +149,59 @@
               { select: false }
             );
           }
-          selectedConselho = e.features[0].id;
-          map.setFeatureState(
-            { source: "conselhos", id: selectedConselho },
-            { select: true }
-          );
-        }
-        Municip = e.features[0].properties.Municipality;
+          if (selectedConselho !== e.features[0].id) {
+            selectedConselho = e.features[0].id;
+            map.setFeatureState(
+              { source: "conselhos", id: selectedConselho },
+              { select: true }
+            );
 
-        var bound = L.latLngBounds(L.geoJson(e.features[0]).getBounds());
-        var center_country = bound.getCenter();
+            Municip = e.features[0].properties.Municipality;
 
-        let cc = 0;
-        if (
-          concelhoData.filter(
-            c =>
-              e.features[0].properties.Municipality.toUpperCase() ===
-              c.attributes.Concelho
-          )[0]
-        )
-          cc = concelhoData.filter(
-            c =>
-              e.features[0].properties.Municipality.toUpperCase() ===
-              c.attributes.Concelho
-          )[0].attributes.ConfirmadosAcumulado_Conc;
+            var bound = L.latLngBounds(L.geoJson(e.features[0]).getBounds());
+            var center_country = bound.getCenter();
 
-        var coordinates = center_country;
-        var description =
-          "<strong>" +
-          e.features[0].properties.Municipality +
-          "</strong><p>" +
-          cc +
-          " Cases</p>";
+            let cc = 0;
+            if (
+              concelhoData.filter(
+                c =>
+                  e.features[0].properties.Municipality.toUpperCase() ===
+                  c.attributes.Concelho
+              )[0]
+            )
+              cc = concelhoData.filter(
+                c =>
+                  e.features[0].properties.Municipality.toUpperCase() ===
+                  c.attributes.Concelho
+              )[0].attributes.ConfirmadosAcumulado_Conc;
 
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
+            var coordinates = center_country;
+            var description =
+              "<strong>" +
+              e.features[0].properties.Municipality +
+              "</strong><p>" +
+              cc +
+              " Cases</p>";
 
-        // Populate the popup and set its coordinates
-        // based on the feature found.
-        popup
-          .setLngLat(coordinates)
-          .setHTML(description)
-          .addTo(map);
-      });
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
 
-      function getUniqueFeatures(array, comparatorProperty) {
-        var existingFeatureKeys = {};
-        // Because features come from tiled vector data, feature geometries may be split
-        // or duplicated across tile boundaries and, as a result, features may appear
-        // multiple times in query results.
-        var uniqueFeatures = array.filter(function(el) {
-          if (existingFeatureKeys[el.properties[comparatorProperty]]) {
-            return false;
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup
+              .setLngLat(coordinates)
+              .setHTML(description)
+              .addTo(map);
           } else {
-            existingFeatureKeys[el.properties[comparatorProperty]] = true;
-            return true;
+            selectedConselho = "";
+            popup.remove();
           }
-        });
-
-        return uniqueFeatures;
-      }
+        }
+      });
     });
   });
 
