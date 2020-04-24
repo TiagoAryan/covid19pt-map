@@ -255,7 +255,7 @@
         <canvas id="myChart" bind:this={canvasElement2} />
       </div>
       <div class="chart4" bind:this={container_box4} >
-        <canvas id="myChart" bind:this={canvasElement4} />
+        <canvas id="myChart" bind:this={canvasElement4} style="display:none" />
       </div>
   </div>
 </div>

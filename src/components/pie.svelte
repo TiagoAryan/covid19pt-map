@@ -4,7 +4,7 @@
   export let lastData;
 
   let container_box;
-  let box_title = "Demographic Overview";
+  let box_title = "Demographics";
   let chart1;
   let chart2;
   let chart3;
@@ -55,7 +55,7 @@
   }
 
   function initChart() {
-    ratio = container_box1.offsetWidth / (container_box1.offsetHeight-20);
+    ratio = (container_box1.offsetWidth-10) / (container_box1.offsetHeight-20);
 
     if (chart1 === undefined) {
       var ctx1 = canvasElement1.getContext("2d");
