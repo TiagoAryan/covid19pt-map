@@ -29,7 +29,8 @@
     display: inline-block;
     margin: 0;
     margin-bottom: 12px;
-    width: 100%;
+    width: calc(100% - 10px);
+    margin-top: 10px;
     left: 0;
     vertical-align: top;
     padding-bottom: 0px;

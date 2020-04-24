@@ -336,7 +336,8 @@
 
 <style>
   .container-chart {
-    width: 100%;
+    width: calc(100% - 10px);
+    left: 0;
     margin-bottom: 12px;
     display: inline-block;
     opacity: 1;

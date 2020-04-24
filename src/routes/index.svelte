@@ -53,6 +53,19 @@
   .half {
     grid-column: span 6;
   }
+  .half-map {
+    grid-column: span 5;
+  }
+  .half-info {
+    grid-column: span 7;
+  }
+
+  .half-chartBig {
+    grid-column: span 8;
+  }
+  .half-chartSmall {
+    grid-column: span 4;
+  }
   .mapsArea {
     grid-column: col / span 2;
     display: grid;
@@ -83,7 +96,7 @@
 </svelte:head>
 
 <div class="main">
-  <div class="half">
+  <div class="half-map">
     <div class="mapsArea">
       <div class="mainmap">
         <Map mapa="main" {timelineData} {concelhoData} {mapboxgl} />
@@ -96,11 +109,21 @@
       </div>
     </div>
   </div>
-  <div class="half">
+  <div class="half-info">
     <Preview {lastData} />
-    <Details {timelineData} />
-    <Chart {timelineData} />
-    <Radar {lastData} />
 
+    <div class="main">
+      <div class="half-chartBig">
+        <Chart {timelineData} />
+        <Details {timelineData} />
+        <Radar {lastData} />
+
+      </div>
+      <div class="half-chartSmall">
+        <Radar {lastData} />
+
+      </div>
+
+    </div>
   </div>
 </div>

@@ -4,7 +4,7 @@
   export let lastData;
 
   let container_box;
-  let box_title = "Male Female Diff";
+  let box_title = "Demographic Overview";
   let chart1;
   let chart2;
   let chart3;
@@ -32,7 +32,6 @@
           data: [lastData.confirmados_m, lastData.confirmados_f],
           backgroundColor: ["#40C0A526", "#FFC83126"],
           borderColor: ["#40C0A5", "#FFC831"],
-
           label: ""
         }
       ],
@@ -79,14 +78,16 @@
           data: age_c_m,
           backgroundColor: ["#40C0A526"],
           borderColor: ["#40C0A5"],
-
+          borderWidth:2,
+				  stack: 'Stack 0',
           label: "Men"
         },
         {
           data: age_c_f,
           backgroundColor: ["#FFC83126"],
           borderColor: ["#FFC831"],
-
+          borderWidth:2,
+				  stack: 'Stack 0',
           label: "Women"
         }
       ],
@@ -189,11 +190,8 @@
       });
       var ctx2 = canvasElement2.getContext("2d");
       chart2 = new Chart(ctx2, {
-        type: "radar",
-        data: {
-          labels: [],
-          datasets: []
-        },
+        type: "bar",
+        data: { },
         options: {
           legend: {
             labels: {
@@ -207,9 +205,7 @@
           aspectRatio: ratio,
           responsive: true,
           hoverMode: "index",
-          stacked: false,
-          spanGaps: true,
-          showLines: true,
+          showLines: false,
           title: {
             display: false
           }
@@ -293,6 +289,9 @@
 </script>
 
 <style>
+  .container-chart {
+    width: calc(100% - 10px);
+  }
   .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -330,20 +329,22 @@
 
     </div>
   </div>
-  <div class="grid-container">
-    <div class="div1">Comfirm</div>
-    <div class="chart1" bind:this={container_box1} style="display:none">
-      <canvas id="myChart" bind:this={canvasElement1} />
-    </div>
-    <div class="chart2" bind:this={container_box2}>
-      <canvas id="myChart" bind:this={canvasElement2} />
-    </div>
-    <div class="div2">Deaths</div>
-    <div class="chart3" bind:this={container_box3} style="display:none">
-      <canvas id="myChart" bind:this={canvasElement3} />
-    </div>
-    <div class="chart4" bind:this={container_box4} style="display:none">
-      <canvas id="myChart" bind:this={canvasElement4} />
+  <div class="container-body">
+    <div class="grid-container">
+      <div class="div1">Comfirm</div>
+      <div class="chart1" bind:this={container_box1} style="display:none">
+        <canvas id="myChart" bind:this={canvasElement1} />
+      </div>
+      <div class="chart2" bind:this={container_box2}>
+        <canvas id="myChart" bind:this={canvasElement2} />
+      </div>
+      <div class="div2">Deaths</div>
+      <div class="chart3" bind:this={container_box3} style="display:none">
+        <canvas id="myChart" bind:this={canvasElement3} />
+      </div>
+      <div class="chart4" bind:this={container_box4} style="display:none">
+        <canvas id="myChart" bind:this={canvasElement4} />
+      </div>
     </div>
   </div>
 </div>

@@ -14,6 +14,7 @@
   $: Municip && getMunicip();
 
   onMount(() => {
+    let mouseState=false;
     let selectedConselho;
     let hoveresConselho;
     let centerMap, zoomMap, bounds;
@@ -34,20 +35,15 @@
     
     map = new mapboxgl.Map({
       container: mapa,
-      style:
-        "https://api.maptiler.com/maps/0732d48d-d1a9-444a-a472-c0a0ff8bf150/style.json?key=TLbKST4hnYUY3nc3yvDh",
+      style: 'https://api.maptiler.com/maps/0732d48d-d1a9-444a-a472-c0a0ff8bf150/style.json?key=TLbKST4hnYUY3nc3yvDh',
       center: centerMap,
       zoom: zoomMap,
       minZoom: 5,
       maxZoom: 8,
       maxBounds: bounds
     });
-     if (mapa == "main") {
-      map.fitBounds([
-      [-13, 36.9469], [-3, 42.1789]
-      ]);
-     }
-
+    map.fitBounds(bounds);
+   
     map.on("load", function() {
       var layers = map.getStyle().layers;
       // Find the index of the first symbol layer in the map style
@@ -191,6 +187,7 @@
       });
 
       map.on("mousemove", "conselhos-fills", function(e) {
+        mouseState=true;
         map.getCanvas().style.cursor = "pointer";
         if (e.features.length > 0) {
           if (hoveresConselho) {
@@ -208,6 +205,7 @@
       });
 
       map.on("mouseleave", "conselhos-fills", function() {
+        mouseState=false;
         if (hoveresConselho) {
           map.setFeatureState(
             { source: "conselhos", id: hoveresConselho },
@@ -221,6 +219,18 @@
         closeButton: false,
         closeOnClick: false
       });
+       map.on("click", function() {
+        if(!mouseState){
+          if (selectedConselho) {
+            map.setFeatureState(
+              { source: "conselhos", id: selectedConselho },
+              { select: false }
+            );
+          }
+          selectedConselho = "";
+          popup.remove();
+        }
+      })
       map.on("click", "conselhos-fills", e => {
         if (e.features.length > 0) {
           if (selectedConselho) {
