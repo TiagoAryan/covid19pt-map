@@ -19,25 +19,13 @@
   let canvasElement4;
   let ratio = 2.4;
 
-  $: chart1 && lastData && fillChart();
+  $: chart2 && lastData && fillChart();
 
   onMount(() => {
     initChart();
   });
 
   async function fillChart() {
-    chart1.data = {
-      datasets: [
-        {
-          data: [lastData.confirmados_m, lastData.confirmados_f],
-          backgroundColor: ["#40C0A526", "#FFC83126"],
-          borderColor: ["#40C0A5", "#FFC831"],
-          label: ""
-        }
-      ],
-      labels: ["Men", "Woman"]
-    };
-
     let age_c = [
       "0-9",
       "10-19",
@@ -94,18 +82,6 @@
       labels: age_c
     };
 
-    chart3.data = {
-      datasets: [
-        {
-          data: [lastData.obitos_m, lastData.obitos_f],
-          backgroundColor: ["#40C0A526", "#FFC83126"],
-          borderColor: ["#40C0A5", "#FFC831"],
-
-          label: ""
-        }
-      ],
-      labels: ["Men", "Woman"]
-    };
 
     let age_o_m = [];
     let age_o_f = [];
@@ -136,6 +112,7 @@
           data: age_o_m,
           backgroundColor: ["#40C0A526"],
           borderColor: ["#40C0A5"],
+          borderWidth:2,
 
           label: "Men"
         },
@@ -143,6 +120,7 @@
           data: age_o_f,
           backgroundColor: ["#FFC83126"],
           borderColor: ["#FFC831"],
+          borderWidth:2,
 
           label: "Women"
         }
@@ -150,44 +128,14 @@
       labels: age_c
     };
 
-    chart1.update();
     chart2.update();
-    chart3.update();
     chart4.update();
   }
 
   function initChart() {
-    ratio = container_box1.offsetWidth / (container_box1.offsetHeight - 88);
+    ratio = container_box2.offsetWidth / (container_box2.offsetHeight - 88);
 
-    if (chart1 === undefined) {
-      var ctx1 = canvasElement1.getContext("2d");
-      chart1 = new Chart(ctx1, {
-        type: "pie",
-        data: {
-          labels: [],
-          datasets: []
-        },
-        options: {
-          legend: {
-            labels: {
-              usePointStyle: true
-            },
-            display: false
-          },
-          tooltips: {
-            mode: "index"
-          },
-          aspectRatio: ratio,
-          responsive: true,
-          hoverMode: "index",
-          stacked: false,
-          spanGaps: true,
-          showLines: true,
-          title: {
-            display: false
-          }
-        }
-      });
+    if (chart2 === undefined) {
       var ctx2 = canvasElement2.getContext("2d");
       chart2 = new Chart(ctx2, {
         type: "bar",
@@ -211,38 +159,11 @@
           }
         }
       });
-      var ctx3 = canvasElement3.getContext("2d");
-      chart3 = new Chart(ctx3, {
-        type: "pie",
-        data: {
-          labels: [],
-          datasets: []
-        },
-        options: {
-          legend: {
-            labels: {
-              usePointStyle: true
-            },
-            display: false
-          },
-          tooltips: {
-            mode: "index"
-          },
-          aspectRatio: ratio,
-          responsive: true,
-          hoverMode: "index",
-          stacked: false,
-          spanGaps: true,
-          showLines: true,
-          title: {
-            display: false
-          }
-        }
-      });
+     
 
       var ctx4 = canvasElement4.getContext("2d");
       chart4 = new Chart(ctx4, {
-        type: "radar",
+        type: "bar",
         data: {
           labels: [],
           datasets: []
@@ -290,7 +211,7 @@
 
 <style>
   .container-chart {
-    width: calc(100% - 10px);
+    width:100%;
   }
   .grid-container {
     display: grid;
@@ -330,21 +251,11 @@
     </div>
   </div>
   <div class="container-body">
-    <div class="grid-container">
-      <div class="div1">Comfirm</div>
-      <div class="chart1" bind:this={container_box1} style="display:none">
-        <canvas id="myChart" bind:this={canvasElement1} />
-      </div>
       <div class="chart2" bind:this={container_box2}>
         <canvas id="myChart" bind:this={canvasElement2} />
       </div>
-      <div class="div2">Deaths</div>
-      <div class="chart3" bind:this={container_box3} style="display:none">
-        <canvas id="myChart" bind:this={canvasElement3} />
-      </div>
-      <div class="chart4" bind:this={container_box4} style="display:none">
+      <div class="chart4" bind:this={container_box4} >
         <canvas id="myChart" bind:this={canvasElement4} />
       </div>
-    </div>
   </div>
 </div>

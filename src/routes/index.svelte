@@ -5,6 +5,7 @@
   import Details from "../components/details.svelte";
   import Chart from "../components/chart.svelte";
   import Radar from "../components/radar.svelte";
+  import Pie from "../components/pie.svelte";
   import { CovidPT } from "covid19-api-pt";
 
   var lastData, timelineData, concelhoData;
@@ -120,7 +121,7 @@
 
       </div>
       <div class="half-chartSmall">
-        <Radar {lastData} />
+        <Pie {lastData} />
 
       </div>
 
