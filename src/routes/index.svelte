@@ -1,8 +1,10 @@
 <script>
+  import { onMount } from "svelte";
   import Map from "../components/map.svelte";
   import Preview from "../components/preview.svelte";
   import Details from "../components/details.svelte";
   import Chart from "../components/chart.svelte";
+  import Radar from "../components/radar.svelte";
   import { CovidPT } from "covid19-api-pt";
 
   var lastData, timelineData, concelhoData;
@@ -32,18 +34,73 @@
         console.error("Error:", error);
       });
   }
+
+  onMount(() => {
+    mapboxgl.setRTLTextPlugin(
+      "https://cdn.maptiler.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.2/mapbox-gl-rtl-text.js"
+    );
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiYmpkaW9nbyIsImEiOiJjazg3bW40dnkwbjYwM2htbWc1NnBidzQ2In0.lh4trQ8-6vDRegpJWs6mBw";
+  });
 </script>
 
 <style>
+  .main {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-gap: 16px;
+  }
+  .half {
+    grid-column: span 6;
+  }
+  .mapsArea {
+    grid-column: col / span 2;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    height: 100vh;
+  }
 
+  .mainmap {
+    grid-column: 1 / 3;
+    grid-row: 1;
+  }
+
+  .map2 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .map3 {
+    grid-column: 2;
+    grid-row: 2;
+  }
 </style>
 
 <svelte:head>
   <title>Covid 19 PT Info</title>
 </svelte:head>
 
-<Map {timelineData} {concelhoData} />
-<Preview {lastData} />
-<Details {timelineData} />
-<Chart {timelineData} />
-<h1>Great success!</h1>
+<div class="main">
+  <div class="half">
+    <div class="mapsArea">
+      <div class="mainmap">
+        <Map mapa="main" {timelineData} {concelhoData} {mapboxgl} />
+      </div>
+      <div class="map2">
+        <Map mapa="acores" {timelineData} {concelhoData} {mapboxgl} />
+      </div>
+      <div class="map3">
+        <Map mapa="madeira" {timelineData} {concelhoData} {mapboxgl} />
+      </div>
+    </div>
+  </div>
+  <div class="half">
+    <Preview {lastData} />
+    <Details {timelineData} />
+    <Chart {timelineData} />
+    <Radar {lastData} />
+
+  </div>
+</div>
