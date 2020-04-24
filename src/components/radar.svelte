@@ -332,17 +332,17 @@
   </div>
   <div class="grid-container">
     <div class="div1">Comfirm</div>
-    <div class="chart1" bind:this={container_box1}>
+    <div class="chart1" bind:this={container_box1} style="display:none">
       <canvas id="myChart" bind:this={canvasElement1} />
     </div>
     <div class="chart2" bind:this={container_box2}>
       <canvas id="myChart" bind:this={canvasElement2} />
     </div>
     <div class="div2">Deaths</div>
-    <div class="chart3" bind:this={container_box3}>
+    <div class="chart3" bind:this={container_box3} style="display:none">
       <canvas id="myChart" bind:this={canvasElement3} />
     </div>
-    <div class="chart4" bind:this={container_box4}>
+    <div class="chart4" bind:this={container_box4} style="display:none">
       <canvas id="myChart" bind:this={canvasElement4} />
     </div>
   </div>

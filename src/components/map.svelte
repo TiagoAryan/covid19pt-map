@@ -21,6 +21,7 @@
       centerMap = [-7.8, 39.5];
       zoomMap = 6;
       bounds = [[-13, 36.9469], [-3, 42.1789]];
+
     } else if (mapa == "acores") {
       centerMap = [-28.1, 38.5];
       zoomMap = 5;
@@ -30,7 +31,7 @@
       zoomMap = 8;
       bounds = [[-17.5087, 32.187], [-16.0311, 33.3348]];
     }
-
+    
     map = new mapboxgl.Map({
       container: mapa,
       style:
@@ -41,6 +42,11 @@
       maxZoom: 8,
       maxBounds: bounds
     });
+     if (mapa == "main") {
+      map.fitBounds([
+      [-13, 36.9469], [-3, 42.1789]
+      ]);
+     }
 
     map.on("load", function() {
       var layers = map.getStyle().layers;
