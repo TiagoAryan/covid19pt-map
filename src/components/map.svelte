@@ -446,7 +446,7 @@
       paint: {
         // make circles larger as the user zooms from z12 to z22
         "circle-radius": {
-          base: 1.75,
+          base: 2.5,
           stops: [[12, 2], [22, 180]]
         },
         // color circles by ethnicity, using a match expression

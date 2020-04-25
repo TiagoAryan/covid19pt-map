@@ -337,6 +337,7 @@
 <style>
   .container-chart {
     width: 100% ;
+    height: calc(50vh - 110px);
     left: 0;
     margin-bottom: 12px;
     display: inline-block;
@@ -359,6 +360,11 @@
     }
     .container-chart.world {
       height: 60vh;
+    }
+    .container-chart {
+      margin-left:10px;
+      width: calc(100% - 20px);
+
     }
   }
 

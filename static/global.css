@@ -564,6 +564,7 @@ button:hover,
     width: 24%;
   }
 }
+
 @media (max-width: 768px) {
   html,
   body {

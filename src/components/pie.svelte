@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import 'chartjs-plugin-labels';
 
   export let lastData;
 
@@ -25,29 +26,34 @@
 
   async function fillChart() {
     chart1.data = {
+      labels: ["Men", "Woman"],
       datasets: [
         {
           data: [lastData.confirmados_m, lastData.confirmados_f],
-          backgroundColor: ["#40C0A526", "#FFC83126"],
-          borderColor: ["#40C0A5", "#FFC831"],
-          label: ""
+          backgroundColor: ['rgba(255,221,128, .2)','rgba(255,200,49, .2)'],
+          borderColor: ['rgba(255,221,128, 1)','rgba(255,200,49, 1)'],
+          hoverBackgroundColor: ['rgba(255,221,128, .4)','rgba(255,200,49, .4)'],
+          borderWidth:2,
+          hoverBorderWidth:3
+
         }
-      ],
-      labels: ["Men", "Woman"]
+      ]
     };
 
 
     chart2.data = {
+      labels: ["Men", "Woman"],
       datasets: [
         {
           data: [lastData.obitos_m, lastData.obitos_f],
-          backgroundColor: ["#40C0A526", "#FFC83126"],
-          borderColor: ["#40C0A5", "#FFC831"],
+          backgroundColor: ['rgba(255,148,143, .2)', 'rgba(255,78,52, .2)'],
+          borderColor: ['rgba(255,148,143, 1)', 'rgba(255,78,52, 1)'],
+          hoverBackgroundColor: ['rgba(255,148,143, .4)', 'rgba(255,78,52, .4)'],
+          borderWidth:2,
+          hoverBorderWidth:3
 
-          label: ""
         }
-      ],
-      labels: ["Men", "Woman"]
+      ]
     };
 
     chart1.update();
@@ -55,7 +61,7 @@
   }
 
   function initChart() {
-    ratio = (container_box1.offsetWidth-10) / (container_box1.offsetHeight-20);
+    ratio = (container_box1.offsetWidth-30) / (container_box1.offsetHeight-40);
 
     if (chart1 === undefined) {
       var ctx1 = canvasElement1.getContext("2d");
@@ -66,14 +72,103 @@
           datasets: []
         },
         options: {
+          plugins:{
+              labels: {
+                render: 'percentage',
+                fontColor: ['white', 'white'],
+                precision: 0,
+                arc: false,
+              }
+          },
           legend: {
             labels: {
               usePointStyle: true
             },
-            display: false
+            display: true,
+            position:"bottom"
+
           },
           tooltips: {
-            mode: "index"
+            mode: "index",
+            enabled: false,
+            custom: function(tooltipModel) {
+              var tooltipEl = document.getElementById("chartjs-tooltip");
+              // Create element on first render
+              if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.style.backgroundColor = "rgba(0,0,0,0.9)";
+                tooltipEl.style.borderRadius = "4px";
+                tooltipEl.style.zIndex = "200";
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+              }
+
+              // Hide if no tooltip
+              if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+              // Set caret Position
+              tooltipEl.classList.remove("above", "below", "no-transform");
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add("no-transform");
+              }
+              function getBody(bodyItem) {
+                return bodyItem.lines;
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                var dataindex = tooltipModel.dataPoints[0].datasetIndex;
+                var index = tooltipModel.dataPoints[0].index;
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+                var gender="Men";
+                if( bodyLines[0][0].includes("Woman")){
+                  gender="Woman";
+
+                }
+                var num_m=parseInt(bodyLines[0][0].replace(gender+": ", ""));
+
+                var innerHtml = "<thead>";
+
+                innerHtml += "</thead><tbody>";
+
+                innerHtml +=
+                  "<tr><th> "+
+                  "<div style='margin-right:12px; display:inline-block; opacity:0.4; font-weight:400'>"+gender+"</div>"+
+                  " <div style='font-weight:400; display:inline-block; text-align:right; font-size:15px'>" +
+                  formatNumber(num_m) +
+                  "</div>"+
+                  "</th></tr>";
+               
+
+                innerHtml += "</tbody>";
+
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+              }
+
+              // `this` will be the overall tooltip
+              var position = this._chart.canvas.getBoundingClientRect();
+
+              // Display, position, and set styles for font
+              tooltipEl.style.opacity = 1;
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.pageXOffset + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.pageYOffset + tooltipModel.caretY + "px";
+              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              tooltipEl.style.padding =
+                tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+              tooltipEl.style.pointerEvents = "none";
+            }
           },
           aspectRatio: ratio,
           responsive: true,
@@ -93,15 +188,104 @@
           labels: [],
           datasets: []
         },
+        
         options: {
+          plugins:{
+              labels: {
+                render: 'percentage',
+                fontColor: ['white', 'white'],
+                precision: 0,
+                arc: false,
+              }
+          },
           legend: {
             labels: {
               usePointStyle: true
             },
-            display: false
+            display: true,
+            position:"bottom"
           },
           tooltips: {
-            mode: "index"
+            mode: "index",
+            enabled: false,
+            custom: function(tooltipModel) {
+              var tooltipEl = document.getElementById("chartjs-tooltip");
+              // Create element on first render
+              if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.style.backgroundColor = "rgba(0,0,0,0.9)";
+                tooltipEl.style.borderRadius = "4px";
+                tooltipEl.style.zIndex = "200";
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+              }
+
+              // Hide if no tooltip
+              if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+              // Set caret Position
+              tooltipEl.classList.remove("above", "below", "no-transform");
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add("no-transform");
+              }
+              function getBody(bodyItem) {
+                return bodyItem.lines;
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                var dataindex = tooltipModel.dataPoints[0].datasetIndex;
+                var index = tooltipModel.dataPoints[0].index;
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+                var gender="Men";
+                if( bodyLines[0][0].includes("Woman")){
+                  gender="Woman";
+
+                }
+                var num_m=parseInt(bodyLines[0][0].replace(gender+": ", ""));
+
+                var innerHtml = "<thead>";
+
+                innerHtml += "</thead><tbody>";
+
+                innerHtml +=
+                  "<tr><th> "+
+                  "<div style='margin-right:12px;display:inline-block; opacity:0.4; font-weight:400'>"+gender+"</div>"+
+                  " <div style='font-weight:400; display:inline-block;  text-align:right; font-size:15px'>" +
+                  formatNumber(num_m) +
+                  "</div>"+
+                  "</th></tr>";
+               
+
+                innerHtml += "</tbody>";
+
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+              }
+
+              // `this` will be the overall tooltip
+              var position = this._chart.canvas.getBoundingClientRect();
+
+              // Display, position, and set styles for font
+              tooltipEl.style.opacity = 1;
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.pageXOffset + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.pageYOffset + tooltipModel.caretY + "px";
+              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              tooltipEl.style.padding =
+                tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+              tooltipEl.style.pointerEvents = "none";
+            }
           },
           aspectRatio: ratio,
           responsive: true,
@@ -133,6 +317,9 @@
       btn_icon = "chart-line";
     }
   }
+  function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
+}
 </script>
 
 <style>
@@ -148,6 +335,33 @@
     position: relative;
     height: calc(100% - 60px);
   }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-gap: 16px;
+  }
+  .grid-pie {
+    grid-column: span 12;
+  }
+  @media (max-width: 768px) {
+    .container-chart {
+      margin-left:10px;
+      width: calc(100% - 20px);
+
+    }
+    .grid-pie {
+      grid-column: span 6;
+    }
+    .container-chart {
+      height:50vh;
+      min-height:300px;
+      margin-bottom:12px;
+    }
+  }
+  @media (max-width: 480px) {
+   
+  }
 </style>
 
 <div class="container-basic container-chart" bind:this={container_box}>
@@ -161,13 +375,19 @@
     </div>
   </div>
   <div class="container-body">
-      <div class="div1">Confirmed</div>
-      <div class="chart-box" bind:this={container_box1}>
-        <canvas id="myChart" bind:this={canvasElement1} />
+    <div class="grid">
+      <div class="grid-pie">
+        <div class="div1">Confirmed</div>
+        <div class="chart-box" bind:this={container_box1}>
+          <canvas id="myChart" bind:this={canvasElement1} />
+        </div>
       </div>
-      <div class="div2">Deaths</div>
-      <div class="chart-box" bind:this={container_box2} >
-        <canvas id="myChart" bind:this={canvasElement2} />
+      <div class="grid-pie">
+        <div class="div2">Deaths</div>
+        <div class="chart-box" bind:this={container_box2} >
+          <canvas id="myChart" bind:this={canvasElement2} />
+      </div>
     </div>
+  </div>
   </div>
 </div>

@@ -1,25 +1,30 @@
 <script>
   import { onMount } from "svelte";
 
+
+
   export let lastData;
 
   let container_box;
-  let box_title = "Demographic Overview";
-  let chart1;
-  let chart2;
-  let chart3;
-  let chart4;
-  let container_box1;
-  let container_box2;
-  let container_box3;
-  let container_box4;
-  let canvasElement1;
-  let canvasElement2;
-  let canvasElement3;
-  let canvasElement4;
-  let ratio = 2.4;
+  let box_title = "Infected";
+  let btn_text = "Deaths";
+  let btn_icon = "chart-line";
 
-  $: chart2 && lastData && fillChart();
+  let chart_r1;
+  let chart_r2;
+  
+  let container_box_r1;
+  let container_box_r2;
+  
+  let canvasElement_r1;
+  let canvasElement_r2;
+
+  let ratio = 2.4;
+  var chart_mode=true;
+  var data_men, data_woman, data_color;
+  var data_color={men:{}, woman:{}};
+
+  $: chart_r2 && lastData && fillChart();
 
   onMount(() => {
     initChart();
@@ -60,28 +65,6 @@
     age_c_f.push(lastData.confirmados_70_79_f);
     age_c_f.push(lastData.confirmados_80_plus_f);
 
-    chart2.data = {
-      datasets: [
-        {
-          data: age_c_m,
-          backgroundColor: ["#40C0A526"],
-          borderColor: ["#40C0A5"],
-          borderWidth:2,
-				  stack: 'Stack 0',
-          label: "Men"
-        },
-        {
-          data: age_c_f,
-          backgroundColor: ["#FFC83126"],
-          borderColor: ["#FFC831"],
-          borderWidth:2,
-				  stack: 'Stack 0',
-          label: "Women"
-        }
-      ],
-      labels: age_c
-    };
-
 
     let age_o_m = [];
     let age_o_f = [];
@@ -106,41 +89,103 @@
     age_o_f.push(lastData.obitos_70_79_f);
     age_o_f.push(lastData.obitos_80_plus_f);
 
-    chart4.data = {
+    if(chart_mode){
+      data_men= age_c_m;
+      data_woman= age_c_f;
+      data_color.men={
+        r:255,
+        g:221,
+        b:128
+      }
+      data_color.woman={
+        r:255,
+        g:200,
+        b:49
+      }
+
+    }else{
+      data_men= age_o_m;
+      data_woman= age_o_f;
+      data_color.men={
+        r:255,
+        g:148,
+        b:143
+      }
+      data_color.woman={
+        r:255,
+        g:78,
+        b:52
+      }
+    }
+
+
+    chart_r2.data = {
+      labels: age_c,
       datasets: [
         {
-          data: age_o_m,
-          backgroundColor: ["#40C0A526"],
-          borderColor: ["#40C0A5"],
+        	label: 'Men',
+          backgroundColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+', .2)',
+          borderColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+', 1)',
+          hoverBackgroundColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+',.4)',
           borderWidth:2,
-
-          label: "Men"
+          hoverBorderWidth:3,
+          stack: 'Stack 0',
+          data: data_men
+          
         },
         {
-          data: age_o_f,
-          backgroundColor: ["#FFC83126"],
-          borderColor: ["#FFC831"],
+          label: "Women",
+          backgroundColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', .2)',
+          borderColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', 1)',
+          hoverBackgroundColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', .4)',
           borderWidth:2,
-
-          label: "Women"
+          hoverBorderWidth:3,
+          stack: 'Stack 0',
+          data: data_woman
+          
         }
-      ],
-      labels: age_c
+      ]
     };
-
-    chart2.update();
-    chart4.update();
+    chart_r2.update();
   }
 
   function initChart() {
-    ratio = container_box2.offsetWidth / (container_box2.offsetHeight - 88);
-
-    if (chart2 === undefined) {
-      var ctx2 = canvasElement2.getContext("2d");
-      chart2 = new Chart(ctx2, {
+    ratio = container_box_r2.offsetWidth / container_box_r2.offsetHeight;
+    data_color.men={
+        r:255,
+        g:221,
+        b:128
+      }
+      data_color.woman={
+        r:255,
+        g:200,
+        b:49
+    }
+    if (chart_r2 === undefined) {
+      var ctx_r2 = canvasElement_r2.getContext("2d");
+      chart_r2 = new Chart(ctx_r2, {
         type: "bar",
         data: { },
+        
         options: {
+          plugins:{
+              labels: {
+                render: '',
+                fontColor: ['transparent', 'transparent','transparent', 'transparent','transparent', 'transparent','transparent', 'transparent','transparent'],
+                precision: 0
+              }
+          },
+          scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+              stacked: true,
+              ticks: {
+                  beginAtZero: true
+              }
+						}]
+					},
           legend: {
             labels: {
               usePointStyle: true
@@ -148,7 +193,106 @@
             display: false
           },
           tooltips: {
-            mode: "index"
+            mode: "index",
+            enabled: false,
+            custom: function(tooltipModel) {
+              var tooltipEl = document.getElementById("chartjs-tooltip");
+              // Create element on first render
+              if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.style.backgroundColor = "rgba(0,0,0,0.9)";
+                tooltipEl.style.borderRadius = "4px";
+                tooltipEl.style.zIndex = "200";
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+              }
+
+              // Hide if no tooltip
+              if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+              // Set caret Position
+              tooltipEl.classList.remove("above", "below", "no-transform");
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add("no-transform");
+              }
+              function getBody(bodyItem) {
+                return bodyItem.lines;
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                var dataindex = tooltipModel.dataPoints[0].datasetIndex;
+                var index = tooltipModel.dataPoints[0].index;
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+                
+
+                var num_m=parseInt(bodyLines[0][0].replace("Men: ", ""));
+                var num_w=parseInt(bodyLines[1][0].replace("Women: ", ""));
+                var total=num_m+num_w;
+
+                var percentage_m= parseInt(num_m*100/total);
+                var percentage_w= parseInt(num_w*100/total);
+
+                var innerHtml = "<thead>";
+                innerHtml +=
+                  "<tr><th style='margin-bottom:4px'> Age Group — " +
+                  titleLines +
+                  "</th></tr>";
+
+                innerHtml += "</thead><tbody>";
+
+                innerHtml +=
+                  "<tr><th> "+
+                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:rgba("+data_color.men.r+","+data_color.men.g+","+data_color.men.b+", .2); border:2px solid rgba("+data_color.men.r+","+data_color.men.g+","+data_color.men.b+", 1)'></div>"+
+                  "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Men</div>"+
+                  " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
+                  formatNumber(num_m) +
+                  "</div>"+
+                  " <div style='font-weight:400; opacity:0.6; display:inline-block; width:30px; text-align:right; font-size:11px'>" +
+                  percentage_m +
+                  "%</div>"+
+                  "</th></tr>";
+                innerHtml +=
+                  "<tr><th>"+
+                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:4px; border-radius:16px;background-color:rgba("+data_color.woman.r+","+data_color.woman.g+","+data_color.woman.b+", .2); border:2px solid rgba("+data_color.woman.r+","+data_color.woman.g+","+data_color.woman.b+", 1)'></div>"+
+                  " <div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Woman</div>"+
+                  " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
+                  formatNumber(num_w) +
+                  "</div>"+
+                  " <div style='font-weight:400; opacity:0.6; display:inline-block; width:30px; text-align:right; font-size:11px'>" +
+                  percentage_w +
+                  "%</div>"+
+                  "</th></tr>";
+
+                innerHtml += "</tbody>";
+
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+              }
+
+              // `this` will be the overall tooltip
+              var position = this._chart.canvas.getBoundingClientRect();
+
+              // Display, position, and set styles for font
+              tooltipEl.style.opacity = 1;
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.pageXOffset + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.pageYOffset + tooltipModel.caretY + "px";
+              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              tooltipEl.style.padding =
+                tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+              tooltipEl.style.pointerEvents = "none";
+            }
           },
           aspectRatio: ratio,
           responsive: true,
@@ -161,34 +305,6 @@
       });
      
 
-      var ctx4 = canvasElement4.getContext("2d");
-      chart4 = new Chart(ctx4, {
-        type: "bar",
-        data: {
-          labels: [],
-          datasets: []
-        },
-        options: {
-          legend: {
-            labels: {
-              usePointStyle: true
-            },
-            display: false
-          },
-          tooltips: {
-            mode: "index"
-          },
-          aspectRatio: ratio,
-          responsive: true,
-          hoverMode: "index",
-          stacked: false,
-          spanGaps: true,
-          showLines: true,
-          title: {
-            display: false
-          }
-        }
-      });
     }
   }
 
@@ -196,22 +312,27 @@
     if (chart_mode) {
       chart_mode = false;
       fillChart();
-      btn_text = "Infected Count";
-      box_title = "Growth Evolution";
+
+      box_title = "Deaths";
+      btn_text = "Infected";
       btn_icon = "user-friends";
     } else {
       chart_mode = true;
       fillChart();
-      box_title = "Infected Count";
-      btn_text = "Growth Evolution";
+      box_title = "Infected";
+      btn_text = "Deaths";
       btn_icon = "chart-line";
     }
   }
+  function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
+}
 </script>
 
 <style>
   .container-chart {
     width:100%;
+    height: calc(50vh - 115px);
   }
   .grid-container {
     display: grid;
@@ -235,8 +356,26 @@
   .chart3 {
     grid-area: 4 / 1 / 5 / 2;
   }
-  .chart4 {
-    grid-area: 4 / 2 / 5 / 3;
+  .chart4 ,.chart2{
+    height: 100% ;
+  }
+  .container-body{
+    height: calc(100% - 40px);
+    position: relative;
+    padding: 15px 24px;
+  }
+  @media (max-width: 768px) {
+    .container-chart {
+      margin-left:10px;
+      width: calc(100% - 20px);
+
+    }
+     .container-chart {
+      height:50vh;
+      min-height:300px;
+    }
+  }
+  @media (max-width: 480px) {
   }
 </style>
 
@@ -247,15 +386,18 @@
     <div class="container-header-contents">
 
       <h5 class="container-title">{box_title}</h5>
-
+      <div
+        style="float:right"
+        class="button secondary"
+        on:click={() => changeChart()}>
+        <i class="fas fa-{btn_icon}" />
+        <p>{btn_text}</p>
+      </div>
     </div>
   </div>
   <div class="container-body">
-      <div class="chart2" bind:this={container_box2}>
-        <canvas id="myChart" bind:this={canvasElement2} />
-      </div>
-      <div class="chart4" bind:this={container_box4} >
-        <canvas id="myChart" bind:this={canvasElement4} style="display:none" />
+      <div class="chart2" bind:this={container_box_r2}>
+        <canvas id="myChart" bind:this={canvasElement_r2} />
       </div>
   </div>
 </div>
