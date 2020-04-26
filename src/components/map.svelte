@@ -328,9 +328,10 @@
         // if (map.getSource("source-points")) map.removeSource("source-points");
 
         let dt = timelineData.data[day].split("-");
-        document.getElementById("day").innerHTML = moment(
-          dt[2] + dt[1] + dt[0]
-        ).format("D MMMM YYYY");
+        if (mapa == "main")
+          document.getElementById("day").innerHTML = moment(
+            dt[2] + dt[1] + dt[0]
+          ).format("D MMMM YYYY");
 
         placeAllCircles(day);
 

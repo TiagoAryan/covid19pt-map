@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import "chartjs-adapter-moment";
 
   export let timelineData;
 
@@ -60,6 +61,18 @@
     if (chart_mode) {
       chart.type = "line";
       chart.options.scales = {
+        xAxes: [
+          {
+            type: "time",
+            time: {
+              parser: "DD/MM/YYYY",
+              tooltipFormat: "D MMM YYYY",
+              displayFormats: {
+                day: "D MMM"
+              }
+            }
+          }
+        ],
         yAxes: [
           {
             type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -164,6 +177,18 @@
     } else {
       chart.type = "bar";
       chart.options.scales = {
+        xAxes: [
+          {
+            type: "time",
+            time: {
+              parser: "DD/MM/YYYY",
+              tooltipFormat: "D MMM YYYY",
+              displayFormats: {
+                day: "D MMM"
+              }
+            }
+          }
+        ],
         yAxes: [
           {
             type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance

@@ -53,9 +53,6 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-gap: 16px;
   }
-  .half {
-    grid-column: span 6;
-  }
   .half-map {
     grid-column: span 5;
   }
@@ -92,10 +89,22 @@
     grid-column: 2;
     grid-row: 2;
   }
+  .pane-loading {
+    position: fixed !important;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    padding: 20vh 0px;
+    -webkit-transition-duration: 0.4s;
+    -moz-transition-duration: 0.4s;
+    -o-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    opacity: 1;
+  }
   @media (max-width: 768px) {
-    .half {
-      grid-column: span 12;
-    }
     .half-map {
       grid-column: span 12;
     }
@@ -116,17 +125,14 @@
       grid-template-rows: 1fr 1fr;
       height: 70vh;
     }
-    .mainmap{
-        grid-column: 1;
-        grid-row: 1 / 3;
+    .mainmap {
+      grid-column: 1;
+      grid-row: 1 / 3;
     }
-    .map2{
+    .map2 {
       grid-column: 2;
       grid-row: 1;
-  }
-    
-
-
+    }
   }
   @media (max-width: 480px) {
     .mapsArea {
@@ -152,8 +158,6 @@
       grid-column: 1;
       grid-row: 2;
     }
-
-
   }
 </style>
 
@@ -161,6 +165,21 @@
   <title>Covid 19 PT Info</title>
 </svelte:head>
 
+{#if !lastData && !timelineData && !concelhoData}
+  <div class="pane-loading">
+    <p>Getting Data</p>
+    <div class="lds-roller">
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  </div>
+{/if}
 <div class="main">
   <div class="half-map">
     <div class="mapsArea">

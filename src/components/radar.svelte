@@ -1,8 +1,6 @@
 <script>
   import { onMount } from "svelte";
 
-
-
   export let lastData;
 
   let container_box;
@@ -12,17 +10,17 @@
 
   let chart_r1;
   let chart_r2;
-  
+
   let container_box_r1;
   let container_box_r2;
-  
+
   let canvasElement_r1;
   let canvasElement_r2;
 
   let ratio = 2.4;
-  var chart_mode=true;
+  var chart_mode = true;
   var data_men, data_woman, data_color;
-  var data_color={men:{}, woman:{}};
+  var data_color = { men: {}, woman: {} };
 
   $: chart_r2 && lastData && fillChart();
 
@@ -65,7 +63,6 @@
     age_c_f.push(lastData.confirmados_70_79_f);
     age_c_f.push(lastData.confirmados_80_plus_f);
 
-
     let age_o_m = [];
     let age_o_f = [];
 
@@ -89,60 +86,98 @@
     age_o_f.push(lastData.obitos_70_79_f);
     age_o_f.push(lastData.obitos_80_plus_f);
 
-    if(chart_mode){
-      data_men= age_c_m;
-      data_woman= age_c_f;
-      data_color.men={
-        r:255,
-        g:221,
-        b:128
-      }
-      data_color.woman={
-        r:255,
-        g:200,
-        b:49
-      }
-
-    }else{
-      data_men= age_o_m;
-      data_woman= age_o_f;
-      data_color.men={
-        r:255,
-        g:148,
-        b:143
-      }
-      data_color.woman={
-        r:255,
-        g:78,
-        b:52
-      }
+    if (chart_mode) {
+      data_men = age_c_m;
+      data_woman = age_c_f;
+      data_color.men = {
+        r: 255,
+        g: 221,
+        b: 128
+      };
+      data_color.woman = {
+        r: 255,
+        g: 200,
+        b: 49
+      };
+    } else {
+      data_men = age_o_m;
+      data_woman = age_o_f;
+      data_color.men = {
+        r: 255,
+        g: 148,
+        b: 143
+      };
+      data_color.woman = {
+        r: 255,
+        g: 78,
+        b: 52
+      };
     }
-
 
     chart_r2.data = {
       labels: age_c,
       datasets: [
         {
-        	label: 'Men',
-          backgroundColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+', .2)',
-          borderColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+', 1)',
-          hoverBackgroundColor: 'rgba('+data_color.men.r+','+data_color.men.g+','+data_color.men.b+',.4)',
-          borderWidth:2,
-          hoverBorderWidth:3,
-          stack: 'Stack 0',
+          label: "Men",
+          backgroundColor:
+            "rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ", .2)",
+          borderColor:
+            "rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ", 1)",
+          hoverBackgroundColor:
+            "rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ",.4)",
+          borderWidth: 2,
+          hoverBorderWidth: 3,
+          stack: "Stack 0",
           data: data_men
-          
         },
         {
           label: "Women",
-          backgroundColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', .2)',
-          borderColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', 1)',
-          hoverBackgroundColor: 'rgba('+data_color.woman.r+','+data_color.woman.g+','+data_color.woman.b+', .4)',
-          borderWidth:2,
-          hoverBorderWidth:3,
-          stack: 'Stack 0',
+          backgroundColor:
+            "rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ", .2)",
+          borderColor:
+            "rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ", 1)",
+          hoverBackgroundColor:
+            "rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ", .4)",
+          borderWidth: 2,
+          hoverBorderWidth: 3,
+          stack: "Stack 0",
           data: data_woman
-          
         }
       ]
     };
@@ -151,41 +186,59 @@
 
   function initChart() {
     ratio = container_box_r2.offsetWidth / container_box_r2.offsetHeight;
-    data_color.men={
-        r:255,
-        g:221,
-        b:128
-      }
-      data_color.woman={
-        r:255,
-        g:200,
-        b:49
-    }
+    data_color.men = {
+      r: 255,
+      g: 221,
+      b: 128
+    };
+    data_color.woman = {
+      r: 255,
+      g: 200,
+      b: 49
+    };
     if (chart_r2 === undefined) {
       var ctx_r2 = canvasElement_r2.getContext("2d");
       chart_r2 = new Chart(ctx_r2, {
         type: "bar",
-        data: { },
-        
+        data: {},
+
         options: {
-          plugins:{
-              labels: {
-                render: '',
-                fontColor: ['transparent', 'transparent','transparent', 'transparent','transparent', 'transparent','transparent', 'transparent','transparent'],
-                precision: 0
-              }
+          plugins: {
+            labels: {
+              render: "",
+              fontColor: [
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent",
+                "transparent"
+              ],
+              precision: 0
+            }
           },
           scales: {
-						xAxes: [{
-							stacked: true,
-						}],
-						yAxes: [{
-              stacked: true,
-              ticks: {
-                  beginAtZero: true
+            xAxes: [
+              {
+                stacked: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: "Age"
+                }
               }
-						}]
-					},
+            ],
+            yAxes: [
+              {
+                stacked: true,
+                ticks: {
+                  beginAtZero: true
+                }
+              }
+            ]
+          },
           legend: {
             labels: {
               usePointStyle: true
@@ -230,14 +283,13 @@
                 var index = tooltipModel.dataPoints[0].index;
                 var titleLines = tooltipModel.title || [];
                 var bodyLines = tooltipModel.body.map(getBody);
-                
 
-                var num_m=parseInt(bodyLines[0][0].replace("Men: ", ""));
-                var num_w=parseInt(bodyLines[1][0].replace("Women: ", ""));
-                var total=num_m+num_w;
+                var num_m = parseInt(bodyLines[0][0].replace("Men: ", ""));
+                var num_w = parseInt(bodyLines[1][0].replace("Women: ", ""));
+                var total = num_m + num_w;
 
-                var percentage_m= parseInt(num_m*100/total);
-                var percentage_w= parseInt(num_w*100/total);
+                var percentage_m = parseInt((num_m * 100) / total);
+                var percentage_w = parseInt((num_w * 100) / total);
 
                 var innerHtml = "<thead>";
                 innerHtml +=
@@ -248,26 +300,50 @@
                 innerHtml += "</thead><tbody>";
 
                 innerHtml +=
-                  "<tr><th> "+
-                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:rgba("+data_color.men.r+","+data_color.men.g+","+data_color.men.b+", .2); border:2px solid rgba("+data_color.men.r+","+data_color.men.g+","+data_color.men.b+", 1)'></div>"+
-                  "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Men</div>"+
+                  "<tr><th> " +
+                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:rgba(" +
+                  data_color.men.r +
+                  "," +
+                  data_color.men.g +
+                  "," +
+                  data_color.men.b +
+                  ", .2); border:2px solid rgba(" +
+                  data_color.men.r +
+                  "," +
+                  data_color.men.g +
+                  "," +
+                  data_color.men.b +
+                  ", 1)'></div>" +
+                  "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Men</div>" +
                   " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
                   formatNumber(num_m) +
-                  "</div>"+
+                  "</div>" +
                   " <div style='font-weight:400; opacity:0.6; display:inline-block; width:30px; text-align:right; font-size:11px'>" +
                   percentage_m +
-                  "%</div>"+
+                  "%</div>" +
                   "</th></tr>";
                 innerHtml +=
-                  "<tr><th>"+
-                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:4px; border-radius:16px;background-color:rgba("+data_color.woman.r+","+data_color.woman.g+","+data_color.woman.b+", .2); border:2px solid rgba("+data_color.woman.r+","+data_color.woman.g+","+data_color.woman.b+", 1)'></div>"+
-                  " <div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Woman</div>"+
+                  "<tr><th>" +
+                  " <div style=' width:14px;display:inline-block;height:14px; margin-right:4px; border-radius:16px;background-color:rgba(" +
+                  data_color.woman.r +
+                  "," +
+                  data_color.woman.g +
+                  "," +
+                  data_color.woman.b +
+                  ", .2); border:2px solid rgba(" +
+                  data_color.woman.r +
+                  "," +
+                  data_color.woman.g +
+                  "," +
+                  data_color.woman.b +
+                  ", 1)'></div>" +
+                  " <div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Woman</div>" +
                   " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
                   formatNumber(num_w) +
-                  "</div>"+
+                  "</div>" +
                   " <div style='font-weight:400; opacity:0.6; display:inline-block; width:30px; text-align:right; font-size:11px'>" +
                   percentage_w +
-                  "%</div>"+
+                  "%</div>" +
                   "</th></tr>";
 
                 innerHtml += "</tbody>";
@@ -303,8 +379,6 @@
           }
         }
       });
-     
-
     }
   }
 
@@ -325,13 +399,13 @@
     }
   }
   function formatNumber(num) {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
-}
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
+  }
 </script>
 
 <style>
   .container-chart {
-    width:100%;
+    width: 100%;
     height: calc(50vh - 115px);
   }
   .grid-container {
@@ -356,23 +430,23 @@
   .chart3 {
     grid-area: 4 / 1 / 5 / 2;
   }
-  .chart4 ,.chart2{
-    height: 100% ;
+  .chart4,
+  .chart2 {
+    height: 100%;
   }
-  .container-body{
+  .container-body {
     height: calc(100% - 40px);
     position: relative;
     padding: 15px 24px;
   }
   @media (max-width: 768px) {
     .container-chart {
-      margin-left:10px;
+      margin-left: 10px;
       width: calc(100% - 20px);
-
     }
-     .container-chart {
-      height:50vh;
-      min-height:300px;
+    .container-chart {
+      height: 50vh;
+      min-height: 300px;
     }
   }
   @media (max-width: 480px) {
@@ -396,8 +470,8 @@
     </div>
   </div>
   <div class="container-body">
-      <div class="chart2" bind:this={container_box_r2}>
-        <canvas id="myChart" bind:this={canvasElement_r2} />
-      </div>
+    <div class="chart2" bind:this={container_box_r2}>
+      <canvas id="myChart" bind:this={canvasElement_r2} />
+    </div>
   </div>
 </div>

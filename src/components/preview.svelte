@@ -23,21 +23,12 @@
       deaths = lastData.obitos;
       active = confirmed - recovered - deaths;
 
-      console.log(lastData.confirmados_novos);
       recuperados_novos =
         timelineData.recuperados[Object.entries(timelineData.data).length - 1] -
         timelineData.recuperados[Object.entries(timelineData.data).length - 2];
-      console.log(
-        timelineData.recuperados[Object.entries(timelineData.data).length - 1] -
-          timelineData.recuperados[Object.entries(timelineData.data).length - 2]
-      );
       obitos_novos =
         timelineData.obitos[Object.entries(timelineData.data).length - 1] -
         timelineData.obitos[Object.entries(timelineData.data).length - 2];
-      console.log(
-        timelineData.obitos[Object.entries(timelineData.data).length - 1] -
-          timelineData.obitos[Object.entries(timelineData.data).length - 2]
-      );
       console.log(
         timelineData.suspeitos[Object.entries(timelineData.data).length - 1] -
           timelineData.suspeitos[Object.entries(timelineData.data).length - 2]
@@ -84,9 +75,11 @@
 
   <div class="container-header">
     <div class="container-header-contents">
-      Portugal (
-      <time>{moment(dt[2] + dt[1] + dt[0]).format('D MMMM YYYY')}</time>
-      )
+      Information for Portugal from
+      <time datetime={moment(dt[2] + dt[1] + dt[0])}>
+        {moment(dt[2] + dt[1] + dt[0]).calendar()}
+      </time>
+
     </div>
 
   </div>

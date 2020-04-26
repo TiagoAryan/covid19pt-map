@@ -36,6 +36,18 @@
 
     chart.type = "line";
     chart.options.scales = {
+      xAxes: [
+        {
+          type: "time",
+          time: {
+            parser: "DD/MM/YYYY",
+            tooltipFormat: "D MMM YYYY",
+            displayFormats: {
+              day: "D MMM"
+            }
+          }
+        }
+      ],
       yAxes: [
         {
           type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
