@@ -5,9 +5,13 @@
 
   let chart;
   let canvasElement;
-  let box_title = "Infected Tests";
+  let box_title = "Indicadores";
   let container_box;
   let ratio = 2.4;
+
+  let suspect=0;
+  let internados=0;
+  let tests=0;
 
   $: chart && timelineData && fillChart();
 
@@ -33,6 +37,10 @@
       vigilan_data.push(timelineData.vigilancia[key]);
       suspect_data.push(timelineData.suspeitos[key]);
     }
+
+    suspect=suspect_data[suspect_data.length-1];
+    internados=uci_data[uci_data.length-1];
+    tests=lab_data[lab_data.length-1];
 
     chart.type = "line";
     chart.options.scales = {
@@ -95,7 +103,7 @@
           pointBorderWidth: 2,
           borderWidth: 2,
           pointHitRadius: 5,
-          pointRadius: 3,
+          pointRadius: 1,
           pointHoverRadius: 12,
           pointHoverBorderWidth: 3
         },
@@ -111,7 +119,7 @@
           pointBorderWidth: 2,
           borderWidth: 2,
           pointHitRadius: 5,
-          pointRadius: 3,
+          pointRadius: 1,
           pointHoverRadius: 12,
           pointHoverBorderWidth: 3
         },
@@ -127,7 +135,7 @@
           pointBorderWidth: 2,
           borderWidth: 2,
           pointHitRadius: 5,
-          pointRadius: 3,
+          pointRadius: 1,
           pointHoverRadius: 12,
           pointHoverBorderWidth: 3
         },
@@ -143,7 +151,7 @@
           pointBorderWidth: 2,
           borderWidth: 2,
           pointHitRadius: 5,
-          pointRadius: 3,
+          pointRadius: 1,
           pointHoverRadius: 12,
           pointHoverBorderWidth: 3
         },
@@ -159,7 +167,7 @@
           pointBorderWidth: 2,
           borderWidth: 2,
           pointHitRadius: 5,
-          pointRadius: 3,
+          pointRadius: 1,
           pointHoverRadius: 12,
           pointHoverBorderWidth: 3
         }
@@ -241,7 +249,7 @@
 
 <style>
   .container-chart {
-    width: 100%;
+    width: calc( 100% - 10px);
     left: 0;
     margin-bottom: 12px;
     display: inline-block;
@@ -252,18 +260,62 @@
     transition-duration: 0.4s;
     vertical-align: top;
   }
+
+
+  .label-big h4 {
+    display: inline-block;
+    margin: 0;
+    font-weight: 600;
+  }
+  .label-big {
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inherit;
+  }
+  .label-yellow {
+    color: #ffc831;
+    background-color: rgba(255, 200, 49, 0.2);
+  }
+  .label-red {
+    color: #ff4e34;
+    background-color: rgba(255, 78, 52, 0.2);
+  }
+  .label-green {
+    color: #40c0a5;
+    background-color: rgba(64, 192, 165, 0.2);
+  }
+  .col-block label {
+    display: block;
+    margin-bottom: 4px;
+    line-height: 0.8rem;
+  }
 </style>
 
 <div class="container-basic container-chart" bind:this={container_box}>
-
   <div class="container-header">
-
     <div class="container-header-contents">
-
       <h5 class="container-title">{box_title}</h5>
     </div>
   </div>
   <div class="container-body">
+    <div class="col-block">
+        <label>Tested Today</label>
+        <div
+           class="label-big label-yellow ">
+          <h4>{tests}</h4>
+        </div>
+      </div>
+      <div class="col-block">
+        <label>Internados Today</label>
+        <div
+          class="label-big {internados < 1000 ? 'label-red' : ''}
+          {internados > 500 && internados <= 1000 ? 'label-yellow' : ''}
+          {internados <= 500 ? 'label-green' : ''}
+          ">
+
+          <h4>{internados}</h4>
+        </div>
+      </div>
     <canvas id="myChart" bind:this={canvasElement} />
   </div>
 </div>

@@ -4,22 +4,22 @@
   export let lastData;
 
   let container_box;
-  let box_title = "Infected";
+  let box_title = "Infected Demographics";
   let btn_text = "Deaths";
   let btn_icon = "chart-line";
 
-  let chart_r1;
+  let chart1;
   let chart_r2;
 
-  let container_box_r1;
+  let container_box1;
   let container_box_r2;
 
-  let canvasElement_r1;
+  let canvasElement1;
   let canvasElement_r2;
 
   let ratio = 2.4;
   var chart_mode = true;
-  var data_men, data_woman, data_color;
+  var data_men, data_woman, data_color, data_pie;
   var data_color = { men: {}, woman: {} };
 
   $: chart_r2 && lastData && fillChart();
@@ -99,6 +99,9 @@
         g: 200,
         b: 49
       };
+
+      data_pie= [lastData.confirmados_m, lastData.confirmados_f];
+
     } else {
       data_men = age_o_m;
       data_woman = age_o_f;
@@ -112,8 +115,58 @@
         g: 78,
         b: 52
       };
+      data_pie= [lastData.obitos_m, lastData.obitos_f];
     }
+    chart1.data = {
+      labels: ["Men", "Woman"],
+      datasets: [
+        {
+          data: data_pie,
+          backgroundColor: ["rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ", .2)","rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ", .2)"],
+          borderColor: ["rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ", 1)","rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ")"],
+          hoverBackgroundColor: ["rgba(" +
+            data_color.men.r +
+            "," +
+            data_color.men.g +
+            "," +
+            data_color.men.b +
+            ", .4)","rgba(" +
+            data_color.woman.r +
+            "," +
+            data_color.woman.g +
+            "," +
+            data_color.woman.b +
+            ", .4)"],
+          borderWidth:2,
+          hoverBorderWidth:3
 
+        }
+      ]
+    };
     chart_r2.data = {
       labels: age_c,
       datasets: [
@@ -181,6 +234,7 @@
         }
       ]
     };
+    chart1.update();
     chart_r2.update();
   }
 
@@ -226,7 +280,7 @@
                 stacked: true,
                 scaleLabel: {
                   display: true,
-                  labelString: "Age"
+                  labelString: ""
                 }
               }
             ],
@@ -379,6 +433,125 @@
           }
         }
       });
+      ratio = (container_box1.offsetWidth) / (container_box1.offsetHeight-40);
+
+      var ctx1 = canvasElement1.getContext("2d");
+      chart1 = new Chart(ctx1, {
+        type: "pie",
+        data: {
+          labels: [],
+          datasets: []
+        },
+        options: {
+          plugins:{
+              labels: {
+                render: 'percentage',
+                fontColor: ['white', 'white'],
+                precision: 0,
+                arc: false,
+              }
+          },
+          legend: {
+            labels: {
+              usePointStyle: true
+            },
+            display: true,
+            position:"bottom"
+
+          },
+          tooltips: {
+            mode: "index",
+            enabled: false,
+            custom: function(tooltipModel) {
+              var tooltipEl = document.getElementById("chartjs-tooltip");
+              // Create element on first render
+              if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.style.backgroundColor = "rgba(0,0,0,0.9)";
+                tooltipEl.style.borderRadius = "4px";
+                tooltipEl.style.zIndex = "200";
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+              }
+
+              // Hide if no tooltip
+              if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+              // Set caret Position
+              tooltipEl.classList.remove("above", "below", "no-transform");
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add("no-transform");
+              }
+              function getBody(bodyItem) {
+                return bodyItem.lines;
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                var dataindex = tooltipModel.dataPoints[0].datasetIndex;
+                var index = tooltipModel.dataPoints[0].index;
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+                var gender="Men";
+                if( bodyLines[0][0].includes("Woman")){
+                  gender="Woman";
+
+                }
+                var num_m=parseInt(bodyLines[0][0].replace(gender+": ", ""));
+
+                var innerHtml = "<thead>";
+
+                innerHtml += "</thead><tbody>";
+
+                innerHtml +=
+                  "<tr><th> "+
+                  "<div style='margin-right:12px; display:inline-block; opacity:0.4; font-weight:400'>"+gender+"</div>"+
+                  " <div style='font-weight:400; display:inline-block; text-align:right; font-size:15px'>" +
+                  formatNumber(num_m) +
+                  "</div>"+
+                  "</th></tr>";
+               
+
+                innerHtml += "</tbody>";
+
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+              }
+
+              // `this` will be the overall tooltip
+              var position = this._chart.canvas.getBoundingClientRect();
+
+              // Display, position, and set styles for font
+              tooltipEl.style.opacity = 1;
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.pageXOffset + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.pageYOffset + tooltipModel.caretY + "px";
+              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              tooltipEl.style.padding =
+                tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+              tooltipEl.style.pointerEvents = "none";
+            }
+          },
+          aspectRatio: ratio,
+          responsive: true,
+          hoverMode: "index",
+          stacked: false,
+          spanGaps: true,
+          showLines: true,
+          title: {
+            display: false
+          }
+        }
+      });
     }
   }
 
@@ -387,13 +560,13 @@
       chart_mode = false;
       fillChart();
 
-      box_title = "Deaths";
+      box_title = "Deaths Demographics";
       btn_text = "Infected";
       btn_icon = "user-friends";
     } else {
       chart_mode = true;
       fillChart();
-      box_title = "Infected";
+      box_title = "Infected Demographics";
       btn_text = "Deaths";
       btn_icon = "chart-line";
     }
@@ -405,7 +578,7 @@
 
 <style>
   .container-chart {
-    width: 100%;
+    width: calc( 100% - 10px);
     height: calc(50vh - 115px);
   }
   .grid-container {
@@ -439,6 +612,18 @@
     position: relative;
     padding: 15px 24px;
   }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-gap: 16px;
+  }
+  .grid-pie {
+    grid-column: span 4;
+  }
+  .grid-radar {
+    grid-column: span 8;
+  }
   @media (max-width: 768px) {
     .container-chart {
       margin-left: 10px;
@@ -470,8 +655,17 @@
     </div>
   </div>
   <div class="container-body">
-    <div class="chart2" bind:this={container_box_r2}>
-      <canvas id="myChart" bind:this={canvasElement_r2} />
+    <div class="grid">
+      <div class="grid-radar">
+        <div class="chart2" bind:this={container_box_r2}>
+          <canvas id="myChart" bind:this={canvasElement_r2} />
+        </div>
+      </div>
+      <div class="grid-pie">
+        <div class="chart-box" bind:this={container_box1}>
+          <canvas id="myChart" bind:this={canvasElement1} />
+        </div>
+      </div>
     </div>
   </div>
 </div>

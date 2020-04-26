@@ -6,7 +6,6 @@
   import Chart from "../components/chart.svelte";
   import Chart2 from "../components/chart2.svelte";
   import Radar from "../components/radar.svelte";
-  import Pie from "../components/pie.svelte";
   import News from "../components/news.svelte";
   import { CovidPT } from "covid19-api-pt";
 
@@ -59,7 +58,9 @@
   .half-info {
     grid-column: span 7;
   }
-
+  .half-chartFull {
+    grid-column: span 12;
+  }
   .half-chartBig {
     grid-column: span 8;
   }
@@ -198,16 +199,15 @@
     <Preview {lastData} {timelineData} />
 
     <div class="main">
-      <div class="half-chartBig">
+      <div class="half-chartFull">
         <Chart {timelineData} />
-        <Chart2 {timelineData} />
         <Details {timelineData} />
-        <Radar {lastData} />
-        <News />
+        <Chart2 {timelineData} />
 
+        <Radar {lastData} />
       </div>
-      <div class="half-chartSmall">
-        <Pie {lastData} />
+      <div class="half-chartBig">
+        <News />
 
       </div>
 

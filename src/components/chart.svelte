@@ -108,6 +108,7 @@
       chart.data = {
         labels: range_dates,
         datasets: [
+          /*
           {
             label: "Suspect",
             defaultFontFamily: "Open Sans",
@@ -120,10 +121,11 @@
             pointBorderWidth: 2,
             borderWidth: 2,
             pointHitRadius: 5,
-            pointRadius: 3,
+            pointRadius: 2,
             pointHoverRadius: 12,
             pointHoverBorderWidth: 3
           },
+          */
           {
             label: "Recovered",
             defaultFontFamily: "Open Sans",
@@ -136,7 +138,7 @@
             pointBorderWidth: 2,
             borderWidth: 2,
             pointHitRadius: 5,
-            pointRadius: 3,
+            pointRadius: 2,
             pointHoverRadius: 12,
             pointHoverBorderWidth: 3
           },
@@ -152,7 +154,7 @@
             pointBorderWidth: 2,
             borderWidth: 2,
             pointHitRadius: 5,
-            pointRadius: 3,
+            pointRadius: 2,
             pointHoverRadius: 12,
             pointHoverBorderWidth: 3
           },
@@ -168,7 +170,7 @@
             pointBorderWidth: 2,
             borderWidth: 2,
             pointHitRadius: 5,
-            pointRadius: 3,
+            pointRadius: 2,
             pointHoverRadius: 12,
             pointHoverBorderWidth: 3
           }
@@ -361,7 +363,7 @@
 
 <style>
   .container-chart {
-    width: 100%;
+    width: calc(100% - 10px);
     height: calc(50vh - 110px);
     left: 0;
     margin-bottom: 12px;
