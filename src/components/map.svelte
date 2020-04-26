@@ -14,7 +14,7 @@
   $: Municip && getMunicip();
 
   onMount(() => {
-    let mouseState=false;
+    let mouseState = false;
     let selectedConselho;
     let hoveresConselho;
     let centerMap, zoomMap, bounds;
@@ -22,7 +22,6 @@
       centerMap = [-7.8, 39.5];
       zoomMap = 6;
       bounds = [[-13, 36.9469], [-3, 42.1789]];
-
     } else if (mapa == "acores") {
       centerMap = [-28.1, 38.5];
       zoomMap = 5;
@@ -32,10 +31,11 @@
       zoomMap = 8;
       bounds = [[-17.5087, 32.187], [-16.0311, 33.3348]];
     }
-    
+
     map = new mapboxgl.Map({
       container: mapa,
-      style: 'https://api.maptiler.com/maps/0732d48d-d1a9-444a-a472-c0a0ff8bf150/style.json?key=TLbKST4hnYUY3nc3yvDh',
+      style:
+        "https://api.maptiler.com/maps/0732d48d-d1a9-444a-a472-c0a0ff8bf150/style.json?key=TLbKST4hnYUY3nc3yvDh",
       center: centerMap,
       zoom: zoomMap,
       minZoom: 5,
@@ -43,7 +43,7 @@
       maxBounds: bounds
     });
     map.fitBounds(bounds);
-   
+
     map.on("load", function() {
       var layers = map.getStyle().layers;
       // Find the index of the first symbol layer in the map style
@@ -187,7 +187,7 @@
       });
 
       map.on("mousemove", "conselhos-fills", function(e) {
-        mouseState=true;
+        mouseState = true;
         map.getCanvas().style.cursor = "pointer";
         if (e.features.length > 0) {
           if (hoveresConselho) {
@@ -205,7 +205,7 @@
       });
 
       map.on("mouseleave", "conselhos-fills", function() {
-        mouseState=false;
+        mouseState = false;
         if (hoveresConselho) {
           map.setFeatureState(
             { source: "conselhos", id: hoveresConselho },
@@ -219,8 +219,8 @@
         closeButton: false,
         closeOnClick: false
       });
-       map.on("click", function() {
-        if(!mouseState){
+      map.on("click", function() {
+        if (!mouseState) {
           if (selectedConselho) {
             map.setFeatureState(
               { source: "conselhos", id: selectedConselho },
@@ -230,7 +230,7 @@
           selectedConselho = "";
           popup.remove();
         }
-      })
+      });
       map.on("click", "conselhos-fills", e => {
         if (e.features.length > 0) {
           if (selectedConselho) {
@@ -324,8 +324,8 @@
     map.on("idle", function() {
       if (run)
         interval = setInterval(() => {
-          if (map.getLayer("infected")) map.removeLayer("infected");
-          if (map.getSource("source-points")) map.removeSource("source-points");
+          // if (map.getLayer("infected")) map.removeLayer("infected");
+          // if (map.getSource("source-points")) map.removeSource("source-points");
 
           placeAllCircles(day);
 
@@ -334,8 +334,10 @@
             clearInterval(interval);
             map.setLayoutProperty("regioes-fills", "visibility", "none");
             map.setLayoutProperty("regioes-borders", "visibility", "none");
-            map.removeLayer("infected");
-            map.removeSource("source-points");
+            for (let i = 0; i < day; i++) {
+              map.removeLayer("infected-" + i);
+              map.removeSource("source-points-" + i);
+            }
             map.setLayoutProperty("conselhos-fills", "visibility", "visible");
             map.setLayoutProperty("conselhos-borders", "visibility", "visible");
             placeConcelhoCircles();
@@ -381,7 +383,7 @@
         var y_min = bound.getNorth();
         var j = 0;
 
-        var num_circles = num / 25;
+        var num_circles = num / 75;
         if (num_circles > 10) {
           var r_severity = "Bad";
         } else {
@@ -434,15 +436,15 @@
       }
     }
 
-    map.addSource("source-points", {
+    map.addSource("source-points-" + day, {
       type: "geojson",
       data: points_coord
     });
 
     map.addLayer({
-      id: "infected",
+      id: "infected-" + day,
       type: "circle",
-      source: "source-points",
+      source: "source-points-" + day,
       paint: {
         // make circles larger as the user zooms from z12 to z22
         "circle-radius": {

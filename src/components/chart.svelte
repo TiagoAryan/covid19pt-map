@@ -336,7 +336,7 @@
 
 <style>
   .container-chart {
-    width: 100% ;
+    width: 100%;
     left: 0;
     margin-bottom: 12px;
     display: inline-block;
@@ -346,29 +346,6 @@
     -o-transition-duration: 0.4s;
     transition-duration: 0.4s;
     vertical-align: top;
-  }
-  .container-chart.country {
-    height: calc(100vh - 348px);
-  }
-  .container-chart.world {
-    height: calc(50% - 12px);
-  }
-  @media (max-width: 768px) {
-    .container-chart.country {
-      height: 60vh;
-    }
-    .container-chart.world {
-      height: 60vh;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .container-chart.country {
-      height: 50vh;
-    }
-    .container-chart.world {
-      height: 50vh;
-    }
   }
 </style>
 

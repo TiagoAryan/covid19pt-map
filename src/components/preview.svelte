@@ -3,6 +3,7 @@
   import moment from "moment";
 
   export let lastData;
+  export let timelineData;
 
   var dt = 0,
     active = 0,
@@ -10,7 +11,7 @@
     recovered = 0,
     deaths = 0;
 
-  $: lastData, setContent();
+  $: lastData && timelineData && setContent();
 
   function setContent() {
     if (lastData) {
@@ -19,6 +20,20 @@
       recovered = lastData.recuperados;
       deaths = lastData.obitos;
       active = confirmed - recovered - deaths;
+
+      console.log(lastData.confirmados_novos);
+      console.log(
+        timelineData.recuperados[Object.entries(timelineData.data).length - 1] -
+          timelineData.recuperados[Object.entries(timelineData.data).length - 2]
+      );
+      console.log(
+        timelineData.obitos[Object.entries(timelineData.data).length - 1] -
+          timelineData.obitos[Object.entries(timelineData.data).length - 2]
+      );
+      console.log(
+        timelineData.suspeitos[Object.entries(timelineData.data).length - 1] -
+          timelineData.suspeitos[Object.entries(timelineData.data).length - 2]
+      );
     }
   }
 </script>

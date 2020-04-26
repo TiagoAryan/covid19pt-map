@@ -4,8 +4,10 @@
   import Preview from "../components/preview.svelte";
   import Details from "../components/details.svelte";
   import Chart from "../components/chart.svelte";
+  import Chart2 from "../components/chart2.svelte";
   import Radar from "../components/radar.svelte";
   import Pie from "../components/pie.svelte";
+  import News from "../components/news.svelte";
   import { CovidPT } from "covid19-api-pt";
 
   var lastData, timelineData, concelhoData;
@@ -111,13 +113,15 @@
     </div>
   </div>
   <div class="half-info">
-    <Preview {lastData} />
+    <Preview {lastData} {timelineData} />
 
     <div class="main">
       <div class="half-chartBig">
         <Chart {timelineData} />
+        <Chart2 {timelineData} />
         <Details {timelineData} />
         <Radar {lastData} />
+        <News />
 
       </div>
       <div class="half-chartSmall">
