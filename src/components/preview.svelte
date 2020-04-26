@@ -44,7 +44,7 @@
     display: inline-block;
     margin: 0;
     margin-bottom: 12px;
-    width: calc(100% - 10px);
+  width: calc(100% - 10px);
     margin-top: 10px;
     left: 0;
     vertical-align: top;
@@ -59,6 +59,11 @@
   @media (max-width: 768px) {
     .container-total {
       height: auto;
+    }
+    .container-total {
+      margin-left:10px;
+      width: calc(100% - 20px);
+
     }
   }
   @media (max-width: 480px) {

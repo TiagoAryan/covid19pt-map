@@ -92,6 +92,69 @@
     grid-column: 2;
     grid-row: 2;
   }
+  @media (max-width: 768px) {
+    .half {
+      grid-column: span 12;
+    }
+    .half-map {
+      grid-column: span 12;
+    }
+    .half-info {
+      grid-column: span 12;
+    }
+    .half-chartBig {
+      grid-column: span 12;
+    }
+    .half-chartSmall {
+      grid-column: span 12;
+    }
+    .mapsArea {
+      height: 70vh;
+    }
+    .mapsArea {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: 70vh;
+    }
+    .mainmap{
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+    .map2{
+      grid-column: 2;
+      grid-row: 1;
+  }
+    
+
+
+  }
+  @media (max-width: 480px) {
+    .mapsArea {
+      grid-column: col / span 2;
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 2fr 1fr;
+      height: 100vh;
+    }
+    .mapsArea {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 2fr 1fr;
+      height: 100vh;
+    }
+
+    .mainmap {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+
+    .map2 {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+
+  }
 </style>
 
 <svelte:head>
