@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import moment from "moment";
 
   export let mapa;
   export let timelineData;
@@ -321,30 +322,33 @@
     let run = true;
     let day = 0;
 
-    map.on("idle", function() {
-      if (run)
-        interval = setInterval(() => {
-          // if (map.getLayer("infected")) map.removeLayer("infected");
-          // if (map.getSource("source-points")) map.removeSource("source-points");
+    if (run)
+      interval = setInterval(() => {
+        // if (map.getLayer("infected")) map.removeLayer("infected");
+        // if (map.getSource("source-points")) map.removeSource("source-points");
 
-          placeAllCircles(day);
+        let dt = timelineData.data[day].split("-");
+        document.getElementById("day").innerHTML = moment(
+          dt[2] + dt[1] + dt[0]
+        ).format("D MMMM YYYY");
 
-          day++;
-          if (day >= length) {
-            clearInterval(interval);
-            map.setLayoutProperty("regioes-fills", "visibility", "none");
-            map.setLayoutProperty("regioes-borders", "visibility", "none");
-            for (let i = 0; i < day; i++) {
-              map.removeLayer("infected-" + i);
-              map.removeSource("source-points-" + i);
-            }
-            map.setLayoutProperty("conselhos-fills", "visibility", "visible");
-            map.setLayoutProperty("conselhos-borders", "visibility", "visible");
-            placeConcelhoCircles();
+        placeAllCircles(day);
+
+        day++;
+        if (day >= length) {
+          clearInterval(interval);
+          map.setLayoutProperty("regioes-fills", "visibility", "none");
+          map.setLayoutProperty("regioes-borders", "visibility", "none");
+          for (let i = 0; i < day; i++) {
+            map.removeLayer("infected-" + i);
+            map.removeSource("source-points-" + i);
           }
-        }, 300);
-      run = false;
-    });
+          map.setLayoutProperty("conselhos-fills", "visibility", "visible");
+          map.setLayoutProperty("conselhos-borders", "visibility", "visible");
+          placeConcelhoCircles();
+        }
+      }, 300);
+    run = false;
   }
 
   function placeAllCircles(day) {
@@ -359,20 +363,28 @@
 
     for (var r = 0; r < features.length; r++) {
       let num;
-      if (features[r].properties.NAME === "Açores")
+      if (features[r].properties.NAME === "Açores") {
         num = timelineData.confirmados_acores[day];
-      else if (features[r].properties.NAME === "Alentejo")
+        if (day != 0) num -= timelineData.confirmados_acores[day - 1];
+      } else if (features[r].properties.NAME === "Alentejo") {
         num = timelineData.confirmados_arsalentejo[day];
-      else if (features[r].properties.NAME === "Algarve")
+        if (day != 0) num -= timelineData.confirmados_arsalentejo[day - 1];
+      } else if (features[r].properties.NAME === "Algarve") {
         num = timelineData.confirmados_arsalgarve[day];
-      else if (features[r].properties.NAME === "Centro")
+        if (day != 0) num -= timelineData.confirmados_arsalgarve[day - 1];
+      } else if (features[r].properties.NAME === "Centro") {
         num = timelineData.confirmados_arscentro[day];
-      else if (features[r].properties.NAME === "Lisboa")
+        if (day != 0) num -= timelineData.confirmados_arscentro[day - 1];
+      } else if (features[r].properties.NAME === "Lisboa") {
         num = timelineData.confirmados_arslvt[day];
-      else if (features[r].properties.NAME === "Norte")
+        if (day != 0) num -= timelineData.confirmados_arslvt[day - 1];
+      } else if (features[r].properties.NAME === "Norte") {
         num = timelineData.confirmados_arsnorte[day];
-      else if (features[r].properties.NAME === "Madeira")
+        if (day != 0) num -= timelineData.confirmados_arsnorte[day - 1];
+      } else if (features[r].properties.NAME === "Madeira") {
         num = timelineData.confirmados_madeira[day];
+        if (day != 0) num -= timelineData.confirmados_madeira[day - 1];
+      }
 
       if (num) {
         var bound = L.latLngBounds(L.geoJson(features[r]).getBounds());
@@ -383,7 +395,7 @@
         var y_min = bound.getNorth();
         var j = 0;
 
-        var num_circles = num / 75;
+        var num_circles = num / 25;
         if (num_circles > 10) {
           var r_severity = "Bad";
         } else {
@@ -586,9 +598,25 @@
 </script>
 
 <style>
-  div {
+  .map {
     height: 100%;
+  }
+  .map-overlay {
+    position: absolute;
+    z-index: 99;
+    padding: 5px;
+    margin: 5px;
+  }
+
+  #features {
+    top: 0;
+    height: 100px;
+    margin-top: 20px;
+    width: 250px;
   }
 </style>
 
-<div id={mapa} />
+<div class="map-overlay" id="legend">
+  <div id="day" />
+</div>
+<div class="map" id={mapa} />

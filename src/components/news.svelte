@@ -96,9 +96,13 @@
                     {moment(item.data).fromNow()}
                   </time>
                 </label>
-                <p class="d-none d-sm-none d-sx-none">{item.descricao}</p>
+                <p class="d-none d-sm-none d-sx-none">
+                  {@html item.descricao}
+                </p>
               </div>
-              <p class="d-sm-block d-sx-block">{item.descricao}</p>
+              <p class="d-sm-block d-sx-block">
+                {@html item.descricao}
+              </p>
             </div>
           </div>
         </a>

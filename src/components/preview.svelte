@@ -1,6 +1,6 @@
 <script>
-  import { s } from "misc";
   import moment from "moment";
+  import { s } from "misc";
 
   export let lastData;
   export let timelineData;
@@ -10,6 +10,8 @@
     confirmed = 0,
     recovered = 0,
     deaths = 0;
+
+  let recuperados_novos, obitos_novos;
 
   $: lastData && timelineData && setContent();
 
@@ -22,10 +24,16 @@
       active = confirmed - recovered - deaths;
 
       console.log(lastData.confirmados_novos);
+      recuperados_novos =
+        timelineData.recuperados[Object.entries(timelineData.data).length - 1] -
+        timelineData.recuperados[Object.entries(timelineData.data).length - 2];
       console.log(
         timelineData.recuperados[Object.entries(timelineData.data).length - 1] -
           timelineData.recuperados[Object.entries(timelineData.data).length - 2]
       );
+      obitos_novos =
+        timelineData.obitos[Object.entries(timelineData.data).length - 1] -
+        timelineData.obitos[Object.entries(timelineData.data).length - 2];
       console.log(
         timelineData.obitos[Object.entries(timelineData.data).length - 1] -
           timelineData.obitos[Object.entries(timelineData.data).length - 2]
@@ -44,7 +52,7 @@
     display: inline-block;
     margin: 0;
     margin-bottom: 12px;
-  width: calc(100% - 10px);
+    width: calc(100% - 10px);
     margin-top: 10px;
     left: 0;
     vertical-align: top;
@@ -61,9 +69,8 @@
       height: auto;
     }
     .container-total {
-      margin-left:10px;
+      margin-left: 10px;
       width: calc(100% - 20px);
-
     }
   }
   @media (max-width: 480px) {
@@ -92,17 +99,28 @@
         <div class="col-block">
           <i class="dot dot_green" />
           <label>Recovered</label>
-          <div class="data">{s(recovered)}</div>
+          <div class="data">
+            {s(recovered)}
+            <span class="badge badge-light">+ {recuperados_novos}</span>
+          </div>
         </div>
         <div class="col-block">
           <i class="dot dot_yellow" />
           <label>Infected</label>
-          <div class="data">{s(active)}</div>
+          <div class="data">
+            {s(active)}
+            <span class="badge badge-light">
+              + {lastData.confirmados_novos}
+            </span>
+          </div>
         </div>
         <div class="col-block">
           <i class="dot dot_red" />
           <label>Deaths</label>
-          <div class="data">{s(deaths)}</div>
+          <div class="data">
+            {s(deaths)}
+            <span class="badge badge-light">+ {obitos_novos}</span>
+          </div>
         </div>
       </div>
       <div class="progress">
