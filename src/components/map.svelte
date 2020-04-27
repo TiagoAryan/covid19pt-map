@@ -5,7 +5,6 @@
   export let mapa;
   export let timelineData;
   export let concelhoData;
-  export let mapboxgl;
   var type = false;
   var map;
 
@@ -32,7 +31,12 @@
       zoomMap = 8;
       bounds = [[-17.5087, 32.187], [-16.0311, 33.3348]];
     }
-
+    if (mapboxgl.getRTLTextPluginStatus() === "unavailable")
+      mapboxgl.setRTLTextPlugin(
+        "https://cdn.maptiler.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.2/mapbox-gl-rtl-text.js"
+      );
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiYmpkaW9nbyIsImEiOiJjazg3bW40dnkwbjYwM2htbWc1NnBidzQ2In0.lh4trQ8-6vDRegpJWs6mBw";
     map = new mapboxgl.Map({
       container: mapa,
       style:

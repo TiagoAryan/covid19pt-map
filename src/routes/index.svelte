@@ -36,14 +36,6 @@
         console.error("Error:", error);
       });
   }
-
-  onMount(() => {
-    mapboxgl.setRTLTextPlugin(
-      "https://cdn.maptiler.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.2/mapbox-gl-rtl-text.js"
-    );
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoiYmpkaW9nbyIsImEiOiJjazg3bW40dnkwbjYwM2htbWc1NnBidzQ2In0.lh4trQ8-6vDRegpJWs6mBw";
-  });
 </script>
 
 <style>
@@ -63,9 +55,6 @@
   }
   .half-chartBig {
     grid-column: span 8;
-  }
-  .half-chartSmall {
-    grid-column: span 4;
   }
   .mapsArea {
     grid-column: col / span 2;
@@ -113,9 +102,6 @@
       grid-column: span 12;
     }
     .half-chartBig {
-      grid-column: span 12;
-    }
-    .half-chartSmall {
       grid-column: span 12;
     }
     .mapsArea {
@@ -185,13 +171,13 @@
   <div class="half-map">
     <div class="mapsArea">
       <div class="mainmap">
-        <Map mapa="main" {timelineData} {concelhoData} {mapboxgl} />
+        <Map mapa="main" {timelineData} {concelhoData} />
       </div>
       <div class="map2">
-        <Map mapa="acores" {timelineData} {concelhoData} {mapboxgl} />
+        <Map mapa="acores" {timelineData} {concelhoData} />
       </div>
       <div class="map3">
-        <Map mapa="madeira" {timelineData} {concelhoData} {mapboxgl} />
+        <Map mapa="madeira" {timelineData} {concelhoData} />
       </div>
     </div>
   </div>
