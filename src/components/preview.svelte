@@ -1,6 +1,12 @@
 <script>
   import moment from "moment";
+  import { getContext } from "svelte";
+  import { fly } from "svelte/transition";
+
+  import Popup from "./Popup.svelte";
   import { s } from "misc";
+
+  const { open } = getContext("simple-modal");
 
   export let lastData;
   export let timelineData;
@@ -9,9 +15,9 @@
     active = 0,
     confirmed = 0,
     recovered = 0,
-    deaths = 0;
-
-  let recuperados_novos, obitos_novos;
+    deaths = 0,
+    recuperados_novos = 0,
+    obitos_novos = 0;
 
   $: lastData && timelineData && setContent();
 
@@ -35,6 +41,10 @@
       );
     }
   }
+
+  const aboutM = () => {
+    open(Popup, { message: "It's a popup!" });
+  };
 </script>
 
 <style>
@@ -79,7 +89,9 @@
       <time datetime={moment(dt[2] + dt[1] + dt[0])}>
         {moment(dt[2] + dt[1] + dt[0]).calendar()}
       </time>
-
+      <div style="float:right" class="button secondary" on:click={aboutM}>
+        <p>About</p>
+      </div>
     </div>
 
   </div>

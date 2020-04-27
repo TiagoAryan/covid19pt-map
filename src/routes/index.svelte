@@ -1,13 +1,13 @@
 <script>
   import { onMount } from "svelte";
+  import { CovidPT } from "covid19-api-pt";
   import Map from "../components/map.svelte";
+  import Modal from "../components/Modal.svelte";
   import Preview from "../components/preview.svelte";
   import Details from "../components/details.svelte";
   import Chart from "../components/chart.svelte";
-  import Chart2 from "../components/chart2.svelte";
   import Radar from "../components/radar.svelte";
   import News from "../components/news.svelte";
-  import { CovidPT } from "covid19-api-pt";
 
   var lastData, timelineData, concelhoData;
 
@@ -196,13 +196,14 @@
     </div>
   </div>
   <div class="half-info">
-    <Preview {lastData} {timelineData} />
+    <Modal>
+      <Preview {lastData} {timelineData} />
+    </Modal>
 
     <div class="main">
       <div class="half-chartFull">
         <Chart {timelineData} />
         <Details {timelineData} />
-        <Chart2 {timelineData} />
 
         <Radar {lastData} />
       </div>
