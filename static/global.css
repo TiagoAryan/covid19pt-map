@@ -558,6 +558,9 @@ button:hover,
     left: calc(50% - 300px);
     width: 600px;
   }
+  .col-block{
+    width: 25%;
+  }
 }
 @media (max-width: 1024px) {
   .col-block {

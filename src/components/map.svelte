@@ -465,11 +465,14 @@
       paint: {
         // make circles larger as the user zooms from z12 to z22
         "circle-radius": {
-          base: 2.5,
-          stops: [[12, 2], [22, 180]]
+          base: 1,
+          stops: [[12, 1.5], [22, 180]]
         },
         // color circles by ethnicity, using a match expression
-        "circle-color": "#fbb03b"
+        "circle-color": "#74643E ",
+        "circle-opacity": 1,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#FFC831"
       }
     });
   }
@@ -573,7 +576,6 @@
           type: "geojson",
           data: points_coord
         });
-
         map.addLayer({
           id: "infected",
           type: "circle",
@@ -581,11 +583,14 @@
           paint: {
             // make circles larger as the user zooms from z12 to z22
             "circle-radius": {
-              base: 1.75,
-              stops: [[12, 2], [22, 180]]
+              base: 1,
+              stops: [[12, 1.5], [22, 180]]
             },
             // color circles by ethnicity, using a match expression
-            "circle-color": "#fbb03b"
+            "circle-color": "#74643E ",
+            "circle-opacity": 1,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#FFC831"
           }
         });
         first_run = true;

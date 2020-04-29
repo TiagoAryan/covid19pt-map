@@ -19,6 +19,11 @@
     recuperados_novos = 0,
     obitos_novos = 0;
 
+  let suspect = 0;
+  let internados = 0;
+  let tests = 0;
+  let internados_grave=0;
+
   $: lastData && timelineData && setContent();
 
   function setContent() {
@@ -39,6 +44,10 @@
         timelineData.suspeitos[Object.entries(timelineData.data).length - 1] -
           timelineData.suspeitos[Object.entries(timelineData.data).length - 2]
       );
+      suspect =lastData.suspeitos;
+      internados =lastData.internados;
+      internados_grave =lastData.internados_uci;
+      tests =lastData.lab;
     }
   }
 
@@ -60,6 +69,36 @@
     padding-bottom: 0px;
   }
 
+  .label-big h4 {
+    display: inline-block;
+    margin: 0;
+    font-weight: 600;
+  }
+  .label-big {
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inherit;
+  }
+  .label-yellow {
+    color: #ffc831;
+    background-color: rgba(255, 200, 49, 0.2);
+  }
+  .label-red {
+    color: #ff4e34;
+    background-color: rgba(255, 78, 52, 0.2);
+  }
+  .label-green {
+    color: #40c0a5;
+    background-color: rgba(64, 192, 165, 0.2);
+  }
+  .current-info-container .col-block label.block {
+    display: block;
+    margin-bottom: 4px;
+    line-height: 0.8rem;
+  }
+  .current-info-container{
+    display:block;
+  }
   @media (max-width: 1280px) {
     .container-total {
       height: auto;
@@ -158,6 +197,39 @@
         </div>
       </div>
       <label class="progress_label">{s(confirmed)} Cases</label>
+
+
+      <div class="current-info-container">
+        <div class="col-block">
+          <label class="block">Tested Today</label>
+          <div class="label-big label-yellow ">
+            <h4>{tests}</h4>
+          </div>
+        </div>
+        <div class="col-block">
+          <label class="block">Internados</label>
+          <div
+            class="label-big {internados < 1000 ? 'label-red' : ''}
+            {internados > 500 && internados <= 1000 ? 'label-yellow' : ''}
+            {internados <= 500 ? 'label-green' : ''}
+            ">
+
+            <h4>{internados}</h4>
+          </div>
+        </div>
+        <div class="col-block">
+            <label class="block">Internados Grave</label>
+            <div
+              class="label-big {internados_grave < 1000 ? 'label-red' : ''}
+              {internados_grave > 500 && internados_grave <= 1000 ? 'label-yellow' : ''}
+              {internados_grave <= 500 ? 'label-green' : ''}
+              ">
+
+              <h4>{internados_grave}</h4>
+            </div>
+          </div>
+
+      </div>
     </div>
   {:else}
     <div class="container-body body-healthy">

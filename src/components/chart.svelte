@@ -13,11 +13,15 @@
   let container_box;
   let ratio = 2.4;
 
-  let suspect = 0;
-  let internados = 0;
-  let tests = 0;
-
   $: chart && timelineData && fillChart();
+  var data_color = [];
+
+
+  var hex_red = "FF4E34";
+  var hex_yellow ="FFC831";
+  var hex_green ="40C0A5";
+  var hex_blue ="5172EE";
+
 
   onMount(() => {
     initChart();
@@ -75,11 +79,12 @@
       lab_data.push(timelineData.lab[key]);
     }
 
-    suspect = suspect_data[suspect_data.length - 1];
-    internados = uci_data[uci_data.length - 1];
-    tests = lab_data[lab_data.length - 1];
 
     if (chart_mode == 1) {
+      data_color[0] = hex_green;
+      data_color[1] = hex_yellow;
+      data_color[2] = hex_red;
+
       chart.type = "line";
       chart.options.scales = {
         xAxes: [
@@ -129,29 +134,11 @@
       chart.data = {
         labels: range_dates,
         datasets: [
-          /*
-          {
-            label: "Suspect",
-            defaultFontFamily: "Open Sans",
-            borderColor: "#007bff",
-            backgroundColor: "#40C0A526",
-            fill: false,
-            data: suspect_data,
-            yAxisID: "y-axis-1",
-            pointBackgroundColor: "#1E1E21",
-            pointBorderWidth: 2,
-            borderWidth: 2,
-            pointHitRadius: 5,
-            pointRadius: 2,
-            pointHoverRadius: 12,
-            pointHoverBorderWidth: 3
-          },
-          */
           {
             label: "Recovered",
             defaultFontFamily: "Open Sans",
-            borderColor: "#40C0A5",
-            backgroundColor: "#40C0A526",
+            borderColor: "#"+data_color[0],
+            backgroundColor: "#"+data_color[0]+"26",
             fill: false,
             data: recovered_data,
             yAxisID: "y-axis-1",
@@ -166,8 +153,8 @@
           {
             label: "Active",
             defaultFontFamily: "Open Sans",
-            borderColor: "#FFC831",
-            backgroundColor: "#FFC83126",
+            borderColor: "#"+data_color[1],
+            backgroundColor: "#"+data_color[1]+"26",
             fill: false,
             data: active_data,
             yAxisID: "y-axis-1",
@@ -182,8 +169,8 @@
           {
             label: "Deaths",
             defaultFontFamily: "Open Sans",
-            borderColor: "#FF4E34",
-            backgroundColor: "#FF4E3426",
+            borderColor: "#"+data_color[2],
+            backgroundColor: "#"+data_color[2]+"26",
             fill: false,
             data: deaths_data,
             yAxisID: "y-axis-1",
@@ -199,6 +186,8 @@
       };
     } else if (chart_mode == 2) {
       chart.type = "bar";
+      data_color[0] = hex_green;
+      data_color[1] = hex_yellow;
       chart.options.scales = {
         xAxes: [
           {
@@ -260,8 +249,8 @@
             type: "line",
             label: "Growth %",
             defaultFontFamily: "Open Sans",
-            borderColor: "#40C0A5",
-            backgroundColor: "#40C0A526",
+            borderColor: "#"+data_color[0],
+            backgroundColor: "#"+data_color[0]+"26",
             fill: false,
             data: growth_data,
             yAxisID: "y-axis-1",
@@ -275,10 +264,10 @@
           },
           {
             type: "bar",
-            label: "New Cases per Day",
+            label: "New Cases",
             defaultFontFamily: "Open Sans",
-            borderColor: "#FFC831",
-            backgroundColor: "#FFC831",
+            borderColor: "#"+data_color[1],
+            backgroundColor: "#"+data_color[1],
             fill: false,
             data: growth_per_day,
             yAxisID: "y-axis-2",
@@ -291,6 +280,9 @@
         ]
       };
     } else if (chart_mode == 3) {
+      data_color[0] = hex_yellow;
+      data_color[1] = hex_red;
+
       chart.type = "bar";
       chart.options.scales = {
         xAxes: [
@@ -353,8 +345,8 @@
             type: "line",
             label: "ICU interneds",
             defaultFontFamily: "Open Sans",
-            borderColor: "#40C0A5",
-            backgroundColor: "#40C0A526",
+            borderColor: "#"+data_color[0],
+            backgroundColor: "#"+data_color[0]+"26",
             fill: false,
             data: uci_data,
             yAxisID: "y-axis-1",
@@ -368,14 +360,14 @@
           },
           {
             type: "bar",
-            label: "Death per Day",
+            label: "Deaths",
             defaultFontFamily: "Open Sans",
-            borderColor: "#FFC831",
-            backgroundColor: "#FFC831",
+            borderColor: "#"+data_color[1]+"00",
+            backgroundColor: "#"+data_color[1]+"99",
             fill: false,
             data: death_per_day,
             yAxisID: "y-axis-2",
-            borderWidth: 1,
+            borderWidth: 0,
             pointHitRadius: 5,
             pointRadius: 1,
             pointHoverRadius: 1,
@@ -384,6 +376,7 @@
         ]
       };
     } else if (chart_mode == 4) {
+      data_color[0] = hex_blue;
       chart.type = "line";
       chart.options.scales = {
         xAxes: [
@@ -434,10 +427,10 @@
         labels: range_dates,
         datasets: [
           {
-            label: "Lab",
+            label: "Tests in the Lab",
             defaultFontFamily: "Open Sans",
-            borderColor: "#FFC831",
-            backgroundColor: "#FFC83126",
+            borderColor: "#"+data_color[0],
+            backgroundColor: "#"+data_color[0]+"26",
             fill: false,
             data: lab_data,
             yAxisID: "y-axis-1",
@@ -474,7 +467,93 @@
             }
           },
           tooltips: {
-            mode: "index"
+            mode: "index",
+            enabled: false,
+            custom: function(tooltipModel) {
+              var tooltipEl = document.getElementById("chartjs-tooltip");
+              // Create element on first render
+              if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.style.backgroundColor = "rgba(0,0,0,0.9)";
+                tooltipEl.style.borderRadius = "4px";
+                tooltipEl.style.zIndex = "200";
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+              }
+
+              // Hide if no tooltip
+              if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+              }
+              // Set caret Position
+              tooltipEl.classList.remove("above", "below", "no-transform");
+              if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+              } else {
+                tooltipEl.classList.add("no-transform");
+              }
+              function getBody(bodyItem) {
+                return bodyItem.lines;
+              }
+
+              // Set Text
+              if (tooltipModel.body) {
+                var dataindex = tooltipModel.dataPoints[0].datasetIndex;
+                var index = tooltipModel.dataPoints[0].index;
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+               
+
+                var innerHtml = "<thead>";
+                innerHtml +=
+                  "<tr><th style='margin-bottom:4px'>  " +
+                  titleLines +
+                  "</th></tr>";
+
+                innerHtml += "</thead><tbody>";
+
+
+                for(var i=0; i< bodyLines.length; i++){
+                  var res = bodyLines[i][0].split(": ");
+
+            
+                  innerHtml +=
+                    "<tr><th> " +
+                    " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:#" +data_color[i] +
+                    "26; border:2px solid #" + data_color[i] +"'></div>" +
+                    "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>"+res[0]+"</div>" +
+                    " <div style='width:120px;font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
+                    formatNumber(parseInt(res[1])) +
+                    "</div>" 
+                    "</th></tr>";
+                }
+               
+
+                innerHtml += "</tbody>";
+
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+              }
+
+              // `this` will be the overall tooltip
+              var position = this._chart.canvas.getBoundingClientRect();
+
+              // Display, position, and set styles for font
+              tooltipEl.style.opacity = 1;
+              tooltipEl.style.position = "absolute";
+              tooltipEl.style.left =
+                position.left + window.pageXOffset + tooltipModel.caretX + "px";
+              tooltipEl.style.top =
+                position.top + window.pageYOffset + tooltipModel.caretY + "px";
+              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              tooltipEl.style.padding =
+                tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+              tooltipEl.style.pointerEvents = "none";
+            }
           },
           aspectRatio: ratio,
           responsive: true,
@@ -541,6 +620,10 @@
     }
     fillChart();
   }
+
+  function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
+  }
 </script>
 
 <style>
@@ -558,33 +641,6 @@
     vertical-align: top;
   }
 
-  .label-big h4 {
-    display: inline-block;
-    margin: 0;
-    font-weight: 600;
-  }
-  .label-big {
-    padding: 6px 12px;
-    border-radius: 6px;
-    display: inherit;
-  }
-  .label-yellow {
-    color: #ffc831;
-    background-color: rgba(255, 200, 49, 0.2);
-  }
-  .label-red {
-    color: #ff4e34;
-    background-color: rgba(255, 78, 52, 0.2);
-  }
-  .label-green {
-    color: #40c0a5;
-    background-color: rgba(64, 192, 165, 0.2);
-  }
-  .col-block label {
-    display: block;
-    margin-bottom: 4px;
-    line-height: 0.8rem;
-  }
   @media (max-width: 768px) {
     .container-chart {
       margin-left: 10px;
@@ -640,24 +696,6 @@
   </div>
 
   <div class="container-body">
-    <div class="col-block">
-      <label>Tested Today</label>
-      <div class="label-big label-yellow ">
-        <h4>{tests}</h4>
-      </div>
-    </div>
-    <div class="col-block">
-      <label>Internados Today</label>
-      <div
-        class="label-big {internados < 1000 ? 'label-red' : ''}
-        {internados > 500 && internados <= 1000 ? 'label-yellow' : ''}
-        {internados <= 500 ? 'label-green' : ''}
-        ">
-
-        <h4>{internados}</h4>
-      </div>
-    </div>
-
     <canvas id="myChart" bind:this={canvasElement} />
   </div>
 </div>
