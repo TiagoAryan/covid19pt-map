@@ -16,12 +16,10 @@
   $: chart && timelineData && fillChart();
   var data_color = [];
 
-
   var hex_red = "FF4E34";
-  var hex_yellow ="FFC831";
-  var hex_green ="40C0A5";
-  var hex_blue ="5172EE";
-
+  var hex_yellow = "FFC831";
+  var hex_green = "40C0A5";
+  var hex_blue = "5172EE";
 
   onMount(() => {
     initChart();
@@ -78,7 +76,6 @@
       uci_data.push(timelineData.internados_uci[key]);
       lab_data.push(timelineData.lab[key]);
     }
-
 
     if (chart_mode == 1) {
       data_color[0] = hex_green;
@@ -137,8 +134,8 @@
           {
             label: "Recovered",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[0],
-            backgroundColor: "#"+data_color[0]+"26",
+            borderColor: "#" + data_color[0],
+            backgroundColor: "#" + data_color[0] + "26",
             fill: false,
             data: recovered_data,
             yAxisID: "y-axis-1",
@@ -153,8 +150,8 @@
           {
             label: "Active",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[1],
-            backgroundColor: "#"+data_color[1]+"26",
+            borderColor: "#" + data_color[1],
+            backgroundColor: "#" + data_color[1] + "26",
             fill: false,
             data: active_data,
             yAxisID: "y-axis-1",
@@ -169,8 +166,8 @@
           {
             label: "Deaths",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[2],
-            backgroundColor: "#"+data_color[2]+"26",
+            borderColor: "#" + data_color[2],
+            backgroundColor: "#" + data_color[2] + "26",
             fill: false,
             data: deaths_data,
             yAxisID: "y-axis-1",
@@ -249,8 +246,8 @@
             type: "line",
             label: "Growth %",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[0],
-            backgroundColor: "#"+data_color[0]+"26",
+            borderColor: "#" + data_color[0],
+            backgroundColor: "#" + data_color[0] + "26",
             fill: false,
             data: growth_data,
             yAxisID: "y-axis-1",
@@ -266,8 +263,8 @@
             type: "bar",
             label: "New Cases",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[1],
-            backgroundColor: "#"+data_color[1],
+            borderColor: "#" + data_color[1],
+            backgroundColor: "#" + data_color[1],
             fill: false,
             data: growth_per_day,
             yAxisID: "y-axis-2",
@@ -345,8 +342,8 @@
             type: "line",
             label: "ICU interneds",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[0],
-            backgroundColor: "#"+data_color[0]+"26",
+            borderColor: "#" + data_color[0],
+            backgroundColor: "#" + data_color[0] + "26",
             fill: false,
             data: uci_data,
             yAxisID: "y-axis-1",
@@ -362,8 +359,8 @@
             type: "bar",
             label: "Deaths",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[1]+"00",
-            backgroundColor: "#"+data_color[1]+"99",
+            borderColor: "#" + data_color[1] + "00",
+            backgroundColor: "#" + data_color[1] + "99",
             fill: false,
             data: death_per_day,
             yAxisID: "y-axis-2",
@@ -429,8 +426,8 @@
           {
             label: "Tests in the Lab",
             defaultFontFamily: "Open Sans",
-            borderColor: "#"+data_color[0],
-            backgroundColor: "#"+data_color[0]+"26",
+            borderColor: "#" + data_color[0],
+            backgroundColor: "#" + data_color[0] + "26",
             fill: false,
             data: lab_data,
             yAxisID: "y-axis-1",
@@ -504,7 +501,6 @@
                 var index = tooltipModel.dataPoints[0].index;
                 var titleLines = tooltipModel.title || [];
                 var bodyLines = tooltipModel.body.map(getBody);
-               
 
                 var innerHtml = "<thead>";
                 innerHtml +=
@@ -514,22 +510,24 @@
 
                 innerHtml += "</thead><tbody>";
 
-
-                for(var i=0; i< bodyLines.length; i++){
+                for (var i = 0; i < bodyLines.length; i++) {
                   var res = bodyLines[i][0].split(": ");
 
-            
                   innerHtml +=
                     "<tr><th> " +
-                    " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:#" +data_color[i] +
-                    "26; border:2px solid #" + data_color[i] +"'></div>" +
-                    "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>"+res[0]+"</div>" +
+                    " <div style=' width:14px;display:inline-block;height:14px; margin-right:6px; border-radius:16px;background-color:#" +
+                    data_color[i] +
+                    "26; border:2px solid #" +
+                    data_color[i] +
+                    "'></div>" +
+                    "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>" +
+                    res[0] +
+                    "</div>" +
                     " <div style='width:120px;font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
                     formatNumber(parseInt(res[1])) +
-                    "</div>" 
-                    "</th></tr>";
+                    "</div>";
+                  "</th></tr>";
                 }
-               
 
                 innerHtml += "</tbody>";
 
@@ -640,7 +638,9 @@
     transition-duration: 0.4s;
     vertical-align: top;
   }
-
+  .container-header-contents .button {
+    margin: 0 4px;
+  }
   @media (max-width: 768px) {
     .container-chart {
       margin-left: 10px;

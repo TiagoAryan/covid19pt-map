@@ -22,7 +22,7 @@
   let suspect = 0;
   let internados = 0;
   let tests = 0;
-  let internados_grave=0;
+  let internados_grave = 0;
 
   $: lastData && timelineData && setContent();
 
@@ -44,10 +44,10 @@
         timelineData.suspeitos[Object.entries(timelineData.data).length - 1] -
           timelineData.suspeitos[Object.entries(timelineData.data).length - 2]
       );
-      suspect =lastData.suspeitos;
-      internados =lastData.internados;
-      internados_grave =lastData.internados_uci;
-      tests =lastData.lab;
+      suspect = lastData.suspeitos;
+      internados = lastData.internados;
+      internados_grave = lastData.internados_uci;
+      tests = lastData.lab;
     }
   }
 
@@ -91,14 +91,24 @@
     color: #40c0a5;
     background-color: rgba(64, 192, 165, 0.2);
   }
+  .container-data-details {
+    text-align: center;
+  }
+  .current-info-container {
+    display: block;
+    text-align: center;
+    margin-top: 35px;
+  }
+  .container-data-details .col-block,
+  .current-info-container .col-block {
+    margin: 0px 5%;
+  }
   .current-info-container .col-block label.block {
     display: block;
     margin-bottom: 4px;
     line-height: 0.8rem;
   }
-  .current-info-container{
-    display:block;
-  }
+
   @media (max-width: 1280px) {
     .container-total {
       height: auto;
@@ -136,9 +146,7 @@
   </div>
 
   {#if lastData}
-    <div
-      class="container-body"
-      style=" width: 100%; padding-bottom: 28px; margin-bottom: 16px;">
+    <div class="container-body" style=" width: 100%; margin-bottom: 16px;">
       <div class="container-data-details">
         <div class="col-block">
           <i class="dot dot_green" />
@@ -198,12 +206,11 @@
       </div>
       <label class="progress_label">{s(confirmed)} Cases</label>
 
-
       <div class="current-info-container">
         <div class="col-block">
           <label class="block">Tested Today</label>
           <div class="label-big label-yellow ">
-            <h4>{tests}</h4>
+            <h4>{s(tests)}</h4>
           </div>
         </div>
         <div class="col-block">
@@ -214,20 +221,20 @@
             {internados <= 500 ? 'label-green' : ''}
             ">
 
-            <h4>{internados}</h4>
+            <h4>{s(internados)}</h4>
           </div>
         </div>
         <div class="col-block">
-            <label class="block">Internados Grave</label>
-            <div
-              class="label-big {internados_grave < 1000 ? 'label-red' : ''}
-              {internados_grave > 500 && internados_grave <= 1000 ? 'label-yellow' : ''}
-              {internados_grave <= 500 ? 'label-green' : ''}
-              ">
+          <label class="block">Internados Grave</label>
+          <div
+            class="label-big {internados_grave < 1000 ? 'label-red' : ''}
+            {internados_grave > 500 && internados_grave <= 1000 ? 'label-yellow' : ''}
+            {internados_grave <= 500 ? 'label-green' : ''}
+            ">
 
-              <h4>{internados_grave}</h4>
-            </div>
+            <h4>{s(internados_grave)}</h4>
           </div>
+        </div>
 
       </div>
     </div>

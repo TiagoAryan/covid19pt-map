@@ -469,10 +469,10 @@
           stops: [[12, 1.5], [22, 180]]
         },
         // color circles by ethnicity, using a match expression
-        "circle-color": "#74643E ",
+        "circle-color": "#74643E",
         "circle-opacity": 1,
         "circle-stroke-width": 1,
-        "circle-stroke-color": "#FFC831"
+        "circle-stroke-color": "#ff4e34"
       }
     });
   }
@@ -587,10 +587,10 @@
               stops: [[12, 1.5], [22, 180]]
             },
             // color circles by ethnicity, using a match expression
-            "circle-color": "#74643E ",
+            "circle-color": "#74643E",
             "circle-opacity": 1,
             "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFC831"
+            "circle-stroke-color": "#ff4e34"
           }
         });
         first_run = true;
