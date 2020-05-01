@@ -91,23 +91,34 @@
     color: #40c0a5;
     background-color: rgba(64, 192, 165, 0.2);
   }
+  .label-blue {
+    color: #5172EE;
+    background-color: rgba(81, 114, 238, 0.2);
+  }
+
   .container-data-details {
-    text-align: center;
+    text-align: left;
   }
   .current-info-container {
     display: block;
-    text-align: center;
+    text-align: left;
     margin-top: 35px;
   }
   .container-data-details .col-block,
   .current-info-container .col-block {
-    margin: 0px 5%;
+    vertical-align:top;
   }
   .current-info-container .col-block label.block {
     display: block;
     margin-bottom: 4px;
     line-height: 0.8rem;
   }
+  .container-header label{
+    display:block;
+  }
+  .container-header{
+    padding-bottom:0px
+    }
 
   @media (max-width: 1280px) {
     .container-total {
@@ -134,13 +145,27 @@
 
   <div class="container-header">
     <div class="container-header-contents">
-      Information for Portugal from
+      <div class="flag">
+        <img src="bandeira.png" alt="flag" />
+      </div>
+            <h5 class="container-title"> Covid em Portugal</h5>
+    
+     
+      <div style="float:right" class="button secondary" on:click={aboutM}>
+        <i class="fas fa-info"></i>
+        <p>Sobre</p>
+      </div>
+       <div style="float:right" class="button secondary">
+        <i class="fas fa-newspaper"></i>
+        <p>Notícias</p>
+      </div>
+        <label>—
+
+      Informação obtida em
       <time datetime={moment(dt[2] + dt[1] + dt[0])}>
         {moment(dt[2] + dt[1] + dt[0]).calendar()}
       </time>
-      <div style="float:right" class="button secondary" on:click={aboutM}>
-        <p>About</p>
-      </div>
+      </label>
     </div>
 
   </div>
@@ -150,7 +175,7 @@
       <div class="container-data-details">
         <div class="col-block">
           <i class="dot dot_green" />
-          <label>Recovered</label>
+          <label>Recuperados</label>
           <div class="data">
             {s(recovered)}
             <span class="badge badge-light">+ {recuperados_novos}</span>
@@ -158,7 +183,7 @@
         </div>
         <div class="col-block">
           <i class="dot dot_yellow" />
-          <label>Infected</label>
+          <label>Infectados</label>
           <div class="data">
             {s(active)}
             <span class="badge badge-light">
@@ -168,7 +193,7 @@
         </div>
         <div class="col-block">
           <i class="dot dot_red" />
-          <label>Deaths</label>
+          <label>Mortes</label>
           <div class="data">
             {s(deaths)}
             <span class="badge badge-light">+ {obitos_novos}</span>
@@ -204,33 +229,28 @@
           {(deaths ? (deaths * 100) / confirmed : 0).toFixed(0)}%
         </div>
       </div>
-      <label class="progress_label">{s(confirmed)} Cases</label>
+      <label class="progress_label">{s(confirmed)} Casos</label>
 
       <div class="current-info-container">
         <div class="col-block">
-          <label class="block">Tested Today</label>
-          <div class="label-big label-yellow ">
+          <label class="block">Testados Hoje</label>
+          <div class="label-big label-blue ">
             <h4>{s(tests)}</h4>
           </div>
         </div>
         <div class="col-block">
           <label class="block">Internados</label>
           <div
-            class="label-big {internados < 1000 ? 'label-red' : ''}
-            {internados > 500 && internados <= 1000 ? 'label-yellow' : ''}
-            {internados <= 500 ? 'label-green' : ''}
+            class="label-big label-blue
             ">
 
             <h4>{s(internados)}</h4>
           </div>
         </div>
         <div class="col-block">
-          <label class="block">Internados Grave</label>
+          <label class="block">Internados em Estado Grave</label>
           <div
-            class="label-big {internados_grave < 1000 ? 'label-red' : ''}
-            {internados_grave > 500 && internados_grave <= 1000 ? 'label-yellow' : ''}
-            {internados_grave <= 500 ? 'label-green' : ''}
-            ">
+            class="label-big label-blue">
 
             <h4>{s(internados_grave)}</h4>
           </div>
@@ -241,7 +261,7 @@
   {:else}
     <div class="container-body body-healthy">
       <i class="fas fa-heartbeat" />
-      <h5>Loading...</h5>
+      <h5>A carregar...</h5>
       <i class="fas fa-heartbeat" />
     </div>
   {/if}

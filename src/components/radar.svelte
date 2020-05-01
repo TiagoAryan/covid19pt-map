@@ -4,9 +4,9 @@
   export let lastData;
 
   let container_box;
-  let box_title = "Infected Demographics";
-  let btn_text = "Deaths";
-  let btn_icon = "chart-line";
+  let box_title = "Faixas Etárias — Mortes";
+  let btn_text = "Infectados";
+  let btn_icon = "user-friends";
 
   let chart1;
   let chart_r2;
@@ -18,7 +18,7 @@
   let canvasElement_r2;
 
   let ratio = 2.4;
-  var chart_mode = true;
+  var chart_mode = false;
   var data_men, data_woman, data_color, data_pie;
   var data_color = { men: {}, woman: {} };
 
@@ -118,7 +118,7 @@
       data_pie= [lastData.obitos_m, lastData.obitos_f];
     }
     chart1.data = {
-      labels: ["Men", "Woman"],
+      labels: ["Homens", "Mulheres"],
       datasets: [
         {
           data: data_pie,
@@ -171,7 +171,7 @@
       labels: age_c,
       datasets: [
         {
-          label: "Men",
+          label: "Homens",
           backgroundColor:
             "rgba(" +
             data_color.men.r +
@@ -202,7 +202,7 @@
           data: data_men
         },
         {
-          label: "Women",
+          label: "Mulheres",
           backgroundColor:
             "rgba(" +
             data_color.woman.r +
@@ -338,8 +338,8 @@
                 var titleLines = tooltipModel.title || [];
                 var bodyLines = tooltipModel.body.map(getBody);
 
-                var num_m = parseInt(bodyLines[0][0].replace("Men: ", ""));
-                var num_w = parseInt(bodyLines[1][0].replace("Women: ", ""));
+                var num_m = parseInt(bodyLines[0][0].replace("Homens: ", ""));
+                var num_w = parseInt(bodyLines[1][0].replace("Mulheres: ", ""));
                 var total = num_m + num_w;
 
                 var percentage_m = parseInt((num_m * 100) / total);
@@ -347,7 +347,7 @@
 
                 var innerHtml = "<thead>";
                 innerHtml +=
-                  "<tr><th style='margin-bottom:4px'> Age Group — " +
+                  "<tr><th style='margin-bottom:4px'> Faixa Etária — " +
                   titleLines +
                   "</th></tr>";
 
@@ -368,7 +368,7 @@
                   "," +
                   data_color.men.b +
                   ", 1)'></div>" +
-                  "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Men</div>" +
+                  "<div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Homens</div>" +
                   " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
                   formatNumber(num_m) +
                   "</div>" +
@@ -391,7 +391,7 @@
                   "," +
                   data_color.woman.b +
                   ", 1)'></div>" +
-                  " <div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Woman</div>" +
+                  " <div style='width:80px; display:inline-block; opacity:0.4; font-weight:400'>Mulheres</div>" +
                   " <div style='font-weight:400; display:inline-block; width:40px; text-align:right; font-size:15px'>" +
                   formatNumber(num_w) +
                   "</div>" +
@@ -560,14 +560,14 @@
       chart_mode = false;
       fillChart();
 
-      box_title = "Deaths Demographics";
-      btn_text = "Infected";
+      box_title = "Faixas Etárias — Mortes";
+      btn_text = "Infectados";
       btn_icon = "user-friends";
     } else {
       chart_mode = true;
       fillChart();
-      box_title = "Infected Demographics";
-      btn_text = "Deaths";
+      box_title = "Faixas Etárias — Infectados";
+      btn_text = "Mortes";
       btn_icon = "chart-line";
     }
   }
@@ -630,8 +630,13 @@
       width: calc(100% - 20px);
     }
     .container-chart {
-      height: 50vh;
-      min-height: 300px;
+      height: auto;
+    }
+    .grid-pie {
+    grid-column: span 12;
+    }
+    .grid-radar {
+      grid-column: span 12;
     }
   }
   @media (max-width: 480px) {

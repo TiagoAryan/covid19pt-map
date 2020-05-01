@@ -199,6 +199,7 @@ button,
   -o-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
+
 .button p,
 button p {
   margin: 0px;
@@ -240,6 +241,11 @@ button.adj-right,
 button:hover,
 .button:hover {
   cursor: pointer;
+}
+.container-header button,
+.container-header .button {
+  margin: -4px 4px;
+  margin-left: 8px;
 }
 .flag {
   display: inline-block;
@@ -595,6 +601,9 @@ button:hover,
   .trigger .fa-chevron-down {
     float: right;
     margin: 15% 0;
+  }
+  .button p, button p{
+    display: none;
   }
 }
 @media (max-width: 480px) {

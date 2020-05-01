@@ -7,8 +7,8 @@
   let chart;
   let chart_mode = 1;
   let canvasElement;
-  let box_title = "Infected Count";
-  let btn_text = "Growth Evolution";
+  let box_title = "Contagem de Infectados";
+  let btn_text = "Crescimento da Pandemia";
   let btn_icon = "chart-line";
   let container_box;
   let ratio = 2.4;
@@ -132,7 +132,7 @@
         labels: range_dates,
         datasets: [
           {
-            label: "Recovered",
+            label: "Recuperados",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[0],
             backgroundColor: "#" + data_color[0] + "26",
@@ -148,7 +148,7 @@
             pointHoverBorderWidth: 3
           },
           {
-            label: "Active",
+            label: "Activos",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[1],
             backgroundColor: "#" + data_color[1] + "26",
@@ -164,7 +164,7 @@
             pointHoverBorderWidth: 3
           },
           {
-            label: "Deaths",
+            label: "Mortes",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[2],
             backgroundColor: "#" + data_color[2] + "26",
@@ -244,7 +244,7 @@
         datasets: [
           {
             type: "line",
-            label: "Growth %",
+            label: "Crescimento %",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[0],
             backgroundColor: "#" + data_color[0] + "26",
@@ -261,7 +261,7 @@
           },
           {
             type: "bar",
-            label: "New Cases",
+            label: "Novos Casos",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[1],
             backgroundColor: "#" + data_color[1],
@@ -340,7 +340,7 @@
         datasets: [
           {
             type: "line",
-            label: "ICU interneds",
+            label: "Internados Graves",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[0],
             backgroundColor: "#" + data_color[0] + "26",
@@ -357,7 +357,7 @@
           },
           {
             type: "bar",
-            label: "Deaths",
+            label: "Mortes",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[1] + "00",
             backgroundColor: "#" + data_color[1] + "99",
@@ -424,7 +424,7 @@
         labels: range_dates,
         datasets: [
           {
-            label: "Tests in the Lab",
+            label: "Testes Realizados",
             defaultFontFamily: "Open Sans",
             borderColor: "#" + data_color[0],
             backgroundColor: "#" + data_color[0] + "26",
@@ -605,16 +605,16 @@
   function changeChart(chart) {
     if (chart == 1) {
       chart_mode = 1;
-      btn_text = "Infected Count";
+      btn_text = "Contagem de Infetados";
     } else if (chart == 2) {
       chart_mode = 2;
-      box_title = "Infected Count";
+      box_title = "Contagem de Infetados";
     } else if (chart == 3) {
       chart_mode = 3;
-      box_title = "ICU";
+      box_title = "Internados";
     } else if (chart == 4) {
       chart_mode = 4;
-      box_title = "Lab Results";
+      box_title = "Testes Realizados";
     }
     fillChart();
   }
@@ -645,6 +645,9 @@
     .container-chart {
       margin-left: 10px;
       width: calc(100% - 20px);
+      min-height:300px;
+      height:50vh;
+      margin-top:8px
     }
   }
 </style>
@@ -662,7 +665,7 @@
           class="button secondary"
           on:click={() => changeChart(4)}>
           <i class="fas fa-chart-line" />
-          <p>Lab Results</p>
+          <p>Testes</p>
         </div>
       {/if}
       {#if chart_mode != 3}
@@ -671,7 +674,7 @@
           class="button secondary"
           on:click={() => changeChart(3)}>
           <i class="fas fa-chart-line" />
-          <p>ICU</p>
+          <p>Internados</p>
         </div>
       {/if}
       {#if chart_mode != 2}
@@ -680,7 +683,7 @@
           class="button secondary"
           on:click={() => changeChart(2)}>
           <i class="fas fa-user-friends" />
-          <p>Growth Evolution</p>
+          <p>Crescimento</p>
         </div>
       {/if}
       {#if chart_mode != 1}
@@ -689,7 +692,7 @@
           class="button secondary"
           on:click={() => changeChart(1)}>
           <i class="fas fa-chart-line" />
-          <p>Infected Count</p>
+          <p>Infetados</p>
         </div>
       {/if}
     </div>

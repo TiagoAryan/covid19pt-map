@@ -97,6 +97,7 @@
   @media (max-width: 768px) {
     .half-map {
       grid-column: span 12;
+      height:70vh;
     }
     .half-info {
       grid-column: span 12;
@@ -128,12 +129,12 @@
       grid-gap: 10px;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 2fr 1fr;
-      height: 100vh;
+      height: 70vh;
     }
     .mapsArea {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 2fr 1fr;
-      height: 100vh;
+      height: 70vh;
     }
 
     .mainmap {

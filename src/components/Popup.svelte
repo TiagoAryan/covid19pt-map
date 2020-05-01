@@ -52,22 +52,22 @@
     <div class="container-row">
 
       <h5 class="subtitle">Sources</h5>
-      <label>Data</label>
+      <label>Dados</label>
       <p>
         <a href="https://github.com/dssg-pt/covid19pt-data" target="_blank">
           github:dssg-pt/covid19pt-data
         </a>
       </p>
-      <label>News</label>
+      <label>Notícias</label>
       <p>
         <a href="https://www.publico.pt/" target="_blank">Público</a>
       </p>
 
     </div>
     <div class="container-row">
-      <h5 class="subtitle">Code</h5>
+      <h5 class="subtitle">Coódigo</h5>
 
-      <label>Repository at</label>
+      <label>Repositório em</label>
       <p>
         <a href="https://github.com/TiagoAryan/covid19pt-map" target="_blank">
           github:TiagoAryan/covid19pt-map
@@ -76,9 +76,9 @@
     </div>
     <div class="container-row">
       <label>
-        Made with
+        Feito com
         <i class="fas fa-heart" />
-        by
+        por
       </label>
       <p>
         <a href="http://sparebullit.com/tiagoaryan">Tiago Aryan</a>
@@ -90,7 +90,7 @@
           class="button secondary"
           href="https://www.buymeacoffee.com/tiagoaryan"
           target="_blank">
-          Buy me a Coffee
+          Paga-me um café!
         </a>
       </p>
     </div>
@@ -100,12 +100,13 @@
   <div class="container-body">
     <div class="container-row">
       <p class="fit" style="text-align: center;">
-        All data and information provided on this site is for informational
-        purposes only. I make no representation as to accuracy, completeness,
-        currentness, suitability, or validity of any information on this site
-        and will not be liable for any errors, omissions, or delays in this
-        information or any losses, injuries, or damages arising from its display
-        or use. All information is provided on an as-is basis.
+        Todos os dados fornecidos por este site são o propósito único de informar. 
+        Não faço representação quanto à precisão, integridade,
+         atualidade, adequação ou validade de qualquer informação neste site
+         e não sou responsável por quaisquer erros, omissões ou atrasos neste
+         informações ou quaisquer perdas, ferimentos ou danos decorrentes de sua exibição
+         ou uso. Todas as informações são fornecidas como estão.
+
       </p>
     </div>
   </div>
@@ -114,7 +115,7 @@
   <div class="container-body">
     <div class="container-row">
       <p class="fit" style="text-align: center;">
-        Wash Hands. Stay safe. Stay inside.
+      Lava as mãos. Fica seguro. Fica em casa.
       </p>
 
     </div>
