@@ -579,7 +579,7 @@
 <style>
   .container-chart {
     width: calc( 100% - 10px);
-    height: calc(50vh - 115px);
+    height: calc(50vh - 190px);
   }
   .grid-container {
     display: grid;
@@ -605,7 +605,7 @@
   }
   .chart4,
   .chart2 {
-    height: 100%;
+    height: 90%;
   }
   .container-body {
     height: calc(100% - 40px);
@@ -617,12 +617,18 @@
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-gap: 16px;
+
+        height: 100%;
+    position: relative;
   }
   .grid-pie {
     grid-column: span 4;
+        height: 100%;
+
   }
   .grid-radar {
     grid-column: span 8;
+        height: 100%;
   }
   @media (max-width: 768px) {
     .container-chart {
