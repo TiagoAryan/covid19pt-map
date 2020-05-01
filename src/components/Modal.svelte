@@ -208,6 +208,15 @@
   .close:active {
     outline: none;
   }
+
+  @media (max-width: 768px) {
+    .window-wrap {
+      margin: 2px;
+    }
+    .window {
+      margin: 0;
+    }
+  }
 </style>
 
 <svelte:window on:keyup={handleKeyup} />

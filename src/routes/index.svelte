@@ -7,7 +7,6 @@
   import Details from "../components/details.svelte";
   import Chart from "../components/chart.svelte";
   import Radar from "../components/radar.svelte";
-  import News from "../components/news.svelte";
 
   var lastData, timelineData, concelhoData;
 
@@ -97,7 +96,7 @@
   @media (max-width: 768px) {
     .half-map {
       grid-column: span 12;
-      height:70vh;
+      height: 70vh;
     }
     .half-info {
       grid-column: span 12;
@@ -194,10 +193,7 @@
 
         <Radar {lastData} />
       </div>
-      <div class="half-chartBig">
-        <News />
-
-      </div>
+      <div class="half-chartBig" />
 
     </div>
   </div>
