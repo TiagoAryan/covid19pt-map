@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@rollup/plugin-json": "^4.0.3",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "chart.js": "^2.9.3",
     "chartjs-adapter-moment": "^0.1.1",
     "chartjs-plugin-labels": "^1.1.0",
